@@ -3,20 +3,21 @@ package com.epn.conexion.dronesproject.modelo;
 import jakarta.persistence.*;
 
 /**
- * Modelo de dron del catalogo.
+ * Clase base abstracta de la jerarquia de drones. Concentra los cuatro pilares
+ * de POO del proyecto:
  *
- * IMPORTANTE - semantica de los campos: distancia_km, peso_maximo y
- * horas_vuelo NO describen un viaje concreto, describen la CAPACIDAD MAXIMA
- * del modelo. Es decir:
+ *   Abstraccion:      calcularCosto y getTipo son abstractos; Dron define QUE
+ *                     hace todo dron, no COMO lo hace cada tipo.
+ *   Herencia:         DronLiviano, DronCarga y DronEmergencia heredan estado y
+ *                     validaciones comunes de aqui.
+ *   Polimorfismo:     el servicio invoca dron.calcularCosto(...) sobre una
+ *                     referencia Dron y cada subclase aplica su tarifa.
+ *   Encapsulamiento:  las tarifas son protected y solo se exponen a traves de
+ *                     componenteDistancia/componentePeso.
  *
- *   distancia_km  = hasta cuantos km puede volar este modelo
- *   peso_maximo   = cuantos kg como maximo puede cargar
- *   horas_vuelo   = cuantos minutos de autonomia tiene
- *
- * Lo que un cliente pide en un Pedido son valores SOLICITADOS, que se
- * comparan contra estas capacidades y se cobran segun la tarifa del tipo.
- * Por eso calcularCosto recibe los valores solicitados como argumentos en
- * lugar de leer los campos de la entidad.
+ * Semantica de los campos: distancia_km, peso_maximo y horas_vuelo son la
+ * CAPACIDAD MAXIMA del modelo, no los datos de un viaje. Por eso calcularCosto
+ * recibe los valores solicitados como argumentos en lugar de leer la entidad.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -54,9 +55,6 @@ public abstract class Dron {
     /**
      * Costo de un servicio concreto sobre este modelo de dron.
      *
-     * @param distanciaSolicitada km que se quieren recorrer
-     * @param pesoSolicitado      kg que se quieren transportar
-     * @param horasSolicitadas    minutos de vuelo que se necesitan
      * @throws IllegalArgumentException si algun valor supera la capacidad del modelo
      */
     public abstract double calcularCosto(double distanciaSolicitada,
@@ -67,12 +65,12 @@ public abstract class Dron {
     public abstract String getTipo();
 
     /**
-     * Cuanto cobra este tipo por km. Se expone aparte de calcularCosto para
-     * poder desglosar la factura sin duplicar las tarifas.
+     * Tarifas por km y por kg de cada tipo. Se declaran aparte de calcularCosto
+     * para poder desglosar la factura sin duplicar los valores en dos sitios.
      */
     protected abstract double tarifaPorKm();
 
-    /** Cuanto cobra este tipo por kg. Cero en los tipos que no cobran por peso. */
+    /** Cero en los tipos que no cobran por peso. */
     protected abstract double tarifaPorKg();
 
     public double componenteDistancia(double distanciaSolicitada) {
@@ -86,9 +84,9 @@ public abstract class Dron {
     /**
      * Comprueba que lo solicitado cabe dentro de la capacidad del modelo.
      *
-     * Vive aqui y no repetida en cada subclase porque la regla es la misma
-     * para las tres; lo que cambia entre tipos son los limites, que ya son
-     * datos de la entidad.
+     * Vive en la clase padre y no repetida en cada subclase porque la regla es
+     * identica para las tres; lo que cambia entre tipos son los limites, que ya
+     * son datos heredados de la entidad.
      */
     protected void validarCapacidad(double distanciaSolicitada,
                                     double pesoSolicitado,

@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Respuesta de POST /login.
  *
- * El servidor la serializa y el cliente JavaFX la deserializa, por eso el
- * constructor lleva @JsonCreator: sin el, Jackson no sabe como construir una
- * clase inmutable sin constructor vacio ni setters.
+ * El constructor lleva @JsonCreator porque los clientes la deserializan: sin
+ * el, Jackson no sabe construir una clase inmutable sin constructor vacio ni
+ * setters.
  */
 public class LoginResponse {
     private final String token;

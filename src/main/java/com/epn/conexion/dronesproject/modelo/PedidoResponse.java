@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 /**
  * Lo que se devuelve al cliente tras crear o consultar un pedido.
  *
- * Tiene dos constructores: el privado que la arma desde la entidad (lo usa el
- * servidor) y el @JsonCreator que la reconstruye desde JSON (lo usa el cliente
- * JavaFX). Sigue sin setters: se construye entera o no se construye.
+ * Dos constructores: el privado la arma desde la entidad (servidor) y el
+ * @JsonCreator la reconstruye desde JSON (clientes). Sin setters: se construye
+ * entera o no se construye.
  */
 public class PedidoResponse {
     private final Long id;

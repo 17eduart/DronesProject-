@@ -24,8 +24,8 @@ public class UsuarioController {
 
     @PostMapping("/registro")
     public ResponseEntity<String> registrar(@RequestBody UsuarioRequest datos){
-        // El registro publico siempre crea CLIENTE. Los ADMINISTRADOR se crean
-        // por /admin/usuarios, que exige ya ser ADMINISTRADOR.
+        // El rol va fijo a CLIENTE y el DTO no expone el campo: si se leyera del
+        // body, cualquiera podria auto-registrarse como ADMINISTRADOR.
         usuarioServicio.registrar(datos.getUsername(), datos.getPassword(), Usuario.ROL_CLIENTE);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Usuario Registrado"+datos.getUsername());
@@ -41,11 +41,6 @@ public class UsuarioController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
-    /**
-     * Alta de administradores. El rol es fijo, igual que en /registro: recibe
-     * el mismo DTO sin campo rol para no reabrir el mass assignment que ya
-     * corregimos. Quien puede llamar aqui lo decide el SecurityFilterChain.
-     */
     @PostMapping("/admin/usuarios")
     public ResponseEntity<String> crearAdministrador(@RequestBody UsuarioRequest datos){
         usuarioServicio.registrar(datos.getUsername(), datos.getPassword(), Usuario.ROL_ADMINISTRADOR);

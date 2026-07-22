@@ -1,0 +1,104 @@
+.root {
+    -fx-background-color: #f4f6f9;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.label {
+    -fx-text-fill: #1f2933;
+    -fx-font-size: 13px;
+}
+
+/* Título principal de cada pantalla (ej. "Home - Drone", "Factura") */
+.titulo {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1b3a6b;
+}
+
+/* Subtítulo de apoyo (ej. "Dron Liviano", "Registro") */
+.subtitulo {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2f5fa8;
+}
+
+.text-field, .password-field, .combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #ccd6e0;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 5px 8px;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused, .password-field:focused, .combo-box:focused {
+    -fx-border-color: #2f5fa8;
+}
+
+/* Botón principal: acción primaria de cada pantalla */
+.button {
+    -fx-background-color: #1b3a6b;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-padding: 7px 16px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #2f5fa8;
+}
+
+.button:pressed {
+    -fx-background-color: #15305c;
+}
+
+/* Acciones secundarias: volver, limpiar, navegar */
+.boton-secundario {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1b3a6b;
+    -fx-border-color: #1b3a6b;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 6px 15px;
+    -fx-cursor: hand;
+}
+
+.boton-secundario:hover {
+    -fx-background-color: #e8edf5;
+}
+
+/* Acciones destructivas o de salida: cerrar sesión, eliminar */
+.boton-peligro {
+    -fx-background-color: transparent;
+    -fx-text-fill: #c0392b;
+    -fx-border-color: #c0392b;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 6px 15px;
+    -fx-cursor: hand;
+}
+
+.boton-peligro:hover {
+    -fx-background-color: #fdecea;
+}
+
+/* Tabla del panel de administración */
+.table-view .column-header-background {
+    -fx-background-color: #1b3a6b;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #eef1f6;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #d6e4f5;
+}

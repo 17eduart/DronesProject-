@@ -3,10 +3,9 @@ package com.epn.conexion.dronesproject.modelo;
 /**
  * Body de POST /pedidos.
  *
- * No tiene campo usuario ni costoTotal a proposito: el usuario sale del token
- * autenticado y el costo lo calcula el servidor. Mismo patron que
- * UsuarioRequest, para que el cliente no pueda pedir a nombre de otro ni
- * fijarse su propio precio.
+ * No expone usuario ni costoTotal a proposito: el usuario sale del token y el
+ * costo lo calcula el servidor, de modo que el cliente no pueda pedir a nombre
+ * de otro ni fijarse su propio precio.
  */
 public class PedidoRequest {
     private String codigoDron;

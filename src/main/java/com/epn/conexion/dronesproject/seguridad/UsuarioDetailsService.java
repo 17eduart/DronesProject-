@@ -11,14 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Carga el Usuario de la base y lo traduce al modelo que entiende Spring
- * Security.
- *
- * Ojo con la convencion de nombres: hasRole("ADMINISTRADOR") busca en realidad
- * la authority "ROLE_ADMINISTRADOR". El prefijo lo pone quien construye la
- * authority, no Spring, asi que hay que anteponerlo aqui.
- */
 @Service
 public class UsuarioDetailsService implements UserDetailsService {
 

@@ -19,18 +19,15 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Cliente HTTP de la API, con java.net.http (JDK), sin librerias externas.
+ * Cliente HTTP de la API, con java.net.http del JDK y sin librerias externas.
+ * Adjunta el header Authorization automaticamente salvo en login y registro,
+ * las dos rutas publicas del backend.
  *
- * Adjunta el header Authorization automaticamente en todas las llamadas salvo
- * login y registro, que son las dos rutas publicas del backend.
- *
- * OJO - las llamadas son SINCRONAS: bloquean el hilo desde el que se invocan.
- * Como los controllers las llaman desde el hilo de JavaFX, la ventana se queda
- * congelada mientras dura la peticion. Para una demo local contra localhost es
- * imperceptible, y por eso se prefirio la version simple; los timeouts de
- * abajo garantizan que el peor caso sean unos segundos y no un cuelgue
- * indefinido. Si la app llegara a hablar con un servidor remoto, habria que
- * mover estas llamadas a un javafx.concurrent.Task.
+ * LIMITACION: las llamadas son SINCRONAS y bloquean el hilo que las invoca.
+ * Como los controllers las llaman desde el hilo de JavaFX, la ventana se congela
+ * mientras dura la peticion; contra localhost es imperceptible y los timeouts
+ * acotan el peor caso a unos segundos. Contra un servidor remoto habria que
+ * moverlas a un javafx.concurrent.Task.
  */
 public class ApiClient {
 
@@ -52,10 +49,6 @@ public class ApiClient {
         return INSTANCIA;
     }
 
-    // ------------------------------------------------------------------
-    // Endpoints
-    // ------------------------------------------------------------------
-
     public LoginResponse login(String username, String password) throws ApiException {
         String cuerpo = escribirJson(new Credenciales(username, password));
         HttpResponse<String> respuesta = enviar(peticion("/login").POST(cuerpoJson(cuerpo)), false);
@@ -71,8 +64,6 @@ public class ApiClient {
         HttpResponse<String> respuesta = enviar(peticion("/dron").GET(), true);
         return leerJson(respuesta.body(), new TypeReference<List<DronResponse>>() {});
     }
-
-    // --- Catalogo de drones (solo ADMINISTRADOR; el backend responde 403 al resto) ---
 
     public DronResponse crearDron(String tipo, DronRequest datos) throws ApiException {
         String cuerpo = escribirJson(datos);
@@ -104,10 +95,6 @@ public class ApiClient {
         return leerJson(respuesta.body(), FacturaResponse.class);
     }
 
-    // ------------------------------------------------------------------
-    // Plomeria
-    // ------------------------------------------------------------------
-
     private HttpRequest.Builder peticion(String ruta) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + ruta))
@@ -121,13 +108,13 @@ public class ApiClient {
     }
 
     /**
-     * Codifica un valor que va dentro de la ruta (por ejemplo el codigo del
-     * dron, que lo escribe el usuario). Sin esto, un codigo con un espacio o
-     * una barra haria que URI.create lanzara IllegalArgumentException, que al
-     * no ser ApiException se escaparia del controller y tumbaria la accion.
+     * Codifica un valor que va dentro de la ruta, como el codigo de dron que
+     * escribe el usuario. Sin esto, un codigo con un espacio o una barra haria
+     * que URI.create lance IllegalArgumentException, que al no ser ApiException
+     * se escaparia del controller y tumbaria la accion.
      *
-     * URLEncoder codifica para formularios, donde el espacio es "+"; en una
-     * ruta el espacio debe ser %20, de ahi el reemplazo.
+     * El replace es necesario porque URLEncoder codifica para formularios, donde
+     * el espacio es "+"; dentro de una ruta debe ser %20.
      */
     private String segmento(String valor) {
         return URLEncoder.encode(valor == null ? "" : valor, StandardCharsets.UTF_8)
@@ -155,8 +142,8 @@ public class ApiClient {
             throw new ApiException("No se pudo conectar con el servidor. "
                     + "¿Esta levantado en " + BASE_URL + "?", e);
         } catch (InterruptedException e) {
-            // Restaurar la bandera: tragarse la interrupcion deja el hilo en un
-            // estado inconsistente para quien lo gestione mas arriba.
+            // Se restaura la bandera: tragarse la interrupcion dejaria el hilo
+            // en un estado inconsistente para quien lo gestione mas arriba.
             Thread.currentThread().interrupt();
             throw new ApiException("La peticion fue interrumpida.", e);
         }
@@ -192,9 +179,8 @@ public class ApiClient {
     }
 
     /**
-     * Body de /login y /registro. Coincide con UsuarioRequest del backend, pero
-     * se declara aqui para no arrastrar el DTO del servidor solo por dos
-     * campos; ademas deja explicito que el cliente NUNCA manda un rol.
+     * Body de /login y /registro. Se declara aqui, en vez de reutilizar
+     * UsuarioRequest, para dejar explicito que el cliente NUNCA manda un rol.
      */
     private record Credenciales(String username, String password) {}
 }

@@ -8,8 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * Existe porque la entidad Dron NO se puede deserializar aqui: es abstracta y
  * no declara @JsonTypeInfo, asi que Jackson no tiene forma de elegir entre
- * DronLiviano, DronCarga y DronEmergencia. Es el mismo muro que nos encontramos
- * en el sprint 1 con el PUT que recibia @RequestBody Dron.
+ * DronLiviano, DronCarga y DronEmergencia.
  *
  * Los nombres con guion bajo son los que emite el servidor (Jackson los deriva
  * de getDistancia_km(), getPeso_maximo(), etc.), por eso van explicitos en

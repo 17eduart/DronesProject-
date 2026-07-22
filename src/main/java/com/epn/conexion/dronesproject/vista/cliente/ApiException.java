@@ -6,10 +6,9 @@ import tools.jackson.databind.ObjectMapper;
 /**
  * Error devuelto por la API o fallo al comunicarse con ella.
  *
- * El mensaje ya viene listo para mostrarse al usuario: cuando el backend
- * responde con el JSON de GlobalException, se extrae el campo "Mensaje" y se
- * pone aqui, para que los controllers puedan hacer
- * lbl_error.setText(e.getMessage()) sin traducir nada.
+ * El mensaje ya viene listo para mostrarse al usuario: se extrae del campo
+ * "Mensaje" del JSON de GlobalException, de modo que los controllers puedan
+ * hacer lbl_error.setText(e.getMessage()) sin traducir nada.
  */
 public class ApiException extends Exception {
 
@@ -34,9 +33,8 @@ public class ApiException extends Exception {
 
     /**
      * Construye la excepcion a partir de una respuesta de error del backend.
-     *
      * Vive aqui y no en ApiClient porque es logica pura sobre (codigo, cuerpo):
-     * no necesita red, y asi se puede probar sin abrir un HttpClient.
+     * no depende de la red y se puede probar de forma aislada.
      */
     public static ApiException desdeRespuesta(int codigo, String cuerpo) {
         return new ApiException(codigo, extraerMensaje(codigo, cuerpo));

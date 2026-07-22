@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.epn.conexion.dronesproject.vista.FacturaController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.epn.conexion.dronesproject.vista.FacturaController" stylesheets="@estilos.css">
    <children>
       <ImageView fitHeight="126.0" fitWidth="232.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -20,8 +20,8 @@
             <Image url="@imagenes/images.jpg" />
          </image>
       </ImageView>
-      <Label layoutX="372.0" layoutY="67.0" text="Home - Drone" />
-      <Label layoutX="391.0" layoutY="108.0" text="Factura" />
+      <Label layoutX="372.0" layoutY="67.0" styleClass="titulo" text="Home - Drone" />
+      <Label layoutX="391.0" layoutY="108.0" styleClass="subtitulo" text="Factura" />
       <Label layoutX="217.0" layoutY="165.0" text="Numero de Factura: " />
       <Label layoutX="213.0" layoutY="199.0" text="Cliente: " />
       <Label layoutX="214.0" layoutY="235.0" prefHeight="17.0" prefWidth="84.0" text="Tipo de Dron: " />
@@ -37,7 +37,7 @@
       <TextField fx:id="lbl_distanciaRecorrida" layoutX="336.0" layoutY="302.0" editable="false" />
       <TextField fx:id="lbl_pesoPaquete" layoutX="335.0" layoutY="339.0" editable="false" />
       <TextField fx:id="lbl_totalFactura" layoutX="334.0" layoutY="370.0" editable="false" />
-      <Button fx:id="btn_volver" layoutX="520.0" layoutY="418.0" mnemonicParsing="false" text="Volver al Inicio" onAction="#volverAlInicio" />
-      <Button fx:id="btn_cerrar_sesion" layoutX="700.0" layoutY="10.0" mnemonicParsing="false" text="Cerrar Sesión" onAction="#cerrarSesion" />
+      <Button fx:id="btn_volver" styleClass="boton-secundario" layoutX="520.0" layoutY="418.0" mnemonicParsing="false" text="Volver al Inicio" onAction="#volverAlInicio" />
+      <Button fx:id="btn_cerrar_sesion" styleClass="boton-peligro" layoutX="700.0" layoutY="10.0" mnemonicParsing="false" text="Cerrar Sesión" onAction="#cerrarSesion" />
    </children>
 </Pane>

@@ -13,6 +13,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Logica de negocio de los pedidos: calcula el costo con el dron elegido y
+ * persiste el resultado. El costo y la fecha los fija el servidor, nunca el
+ * cliente.
+ */
 @Service
 public class PedidoServicio {
 
@@ -44,9 +49,9 @@ public class PedidoServicio {
         Dron dron = dronRepository.findById(codigoDron)
                 .orElseThrow(() -> new RecursoNoEncontradoException("No existe el dron " + codigoDron));
 
-        // Aqui trabaja el polimorfismo: cada subclase valida su capacidad y
-        // aplica su propia tarifa. Si algo excede el maximo, la excepcion sale
-        // de aqui y no se llega a guardar nada.
+        // Punto donde actua el polimorfismo: sobre una referencia Dron, cada
+        // subclase valida su capacidad y aplica su tarifa. Si algo excede el
+        // maximo la excepcion sale de aqui y no se guarda ningun pedido.
         double costo = dron.calcularCosto(distanciaSolicitada, pesoSolicitado, horasSolicitadas);
 
         Pedido pedido = new Pedido(usuario, dron, distanciaSolicitada, pesoSolicitado,

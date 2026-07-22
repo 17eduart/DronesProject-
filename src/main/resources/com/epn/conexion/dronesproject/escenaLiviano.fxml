@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.epn.conexion.dronesproject.vista.PedidoLivianoController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.epn.conexion.dronesproject.vista.PedidoLivianoController" stylesheets="@estilos.css">
    <children>
       <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -21,8 +21,8 @@
             <Image url="@imagenes/images.jpg" />
          </image>
       </ImageView>
-      <Label layoutX="372.0" layoutY="67.0" text="Home - Drone" />
-      <Label layoutX="377.0" layoutY="108.0" text="Dron Liviano" />
+      <Label layoutX="372.0" layoutY="67.0" styleClass="titulo" text="Home - Drone" />
+      <Label layoutX="377.0" layoutY="108.0" styleClass="subtitulo" text="Dron Liviano" />
       <Label layoutX="207.0" layoutY="165.0" text="Selecciona el modelo" />
       <Label layoutX="207.0" layoutY="199.0" text="Distancia (Km)" />
       <Label layoutX="207.0" layoutY="235.0" text="Peso (Kg)" />
@@ -33,7 +33,7 @@
       <Button fx:id="btn_cotizar" layoutX="384.0" layoutY="330.0" mnemonicParsing="false" text="Cotizar" onAction="#cotizar" />
       <ComboBox fx:id="box_modelo" layoutX="336.0" layoutY="161.0" prefWidth="150.0" />
       <Label fx:id="lbl_error" layoutX="207.0" layoutY="365.0" prefWidth="400.0" style="-fx-text-fill: #c0392b;" text="" />
-      <Button fx:id="btn_volver" layoutX="30.0" layoutY="480.0" mnemonicParsing="false" text="Volver" onAction="#volver" />
-      <Button fx:id="btn_cerrar_sesion" layoutX="700.0" layoutY="10.0" mnemonicParsing="false" text="Cerrar Sesión" onAction="#cerrarSesion" />
+      <Button fx:id="btn_volver" styleClass="boton-secundario" layoutX="30.0" layoutY="480.0" mnemonicParsing="false" text="Volver" onAction="#volver" />
+      <Button fx:id="btn_cerrar_sesion" styleClass="boton-peligro" layoutX="700.0" layoutY="10.0" mnemonicParsing="false" text="Cerrar Sesión" onAction="#cerrarSesion" />
    </children>
 </Pane>

@@ -9,15 +9,15 @@
 <?import javafx.scene.layout.Pane?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.epn.conexion.dronesproject.vista.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.epn.conexion.dronesproject.vista.LoginController" stylesheets="@estilos.css">
    <children>
-      <Label layoutX="263.0" layoutY="28.0" text="Home-Drones" />
+      <Label layoutX="263.0" layoutY="28.0" styleClass="titulo" text="Home-Drones" />
       <Label layoutX="150.0" layoutY="91.0" text="Usuario: " />
       <Label layoutX="150.0" layoutY="132.0" text="Contraseña: " />
       <TextField fx:id="lbl_username" layoutX="226.0" layoutY="87.0" />
       <PasswordField fx:id="lbl_password" layoutX="226.0" layoutY="128.0" />
       <Button fx:id="btn_inicio_sesion" layoutX="173.0" layoutY="225.0" mnemonicParsing="false" text="Iniciar Sesion" onAction="#iniciarSesion" />
-      <Button fx:id="btn_registro" layoutX="352.0" layoutY="225.0" mnemonicParsing="false" text="Registrarse" onAction="#irARegistro" />
+      <Button fx:id="btn_registro" styleClass="boton-secundario" layoutX="352.0" layoutY="225.0" mnemonicParsing="false" text="Registrarse" onAction="#irARegistro" />
       <Label fx:id="lbl_error" layoutX="150.0" layoutY="176.0" prefWidth="330.0" style="-fx-text-fill: #c0392b;" text="" />
       <ImageView fitHeight="90.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true">
          <image>

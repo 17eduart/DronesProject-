@@ -14,10 +14,9 @@ import java.time.LocalDateTime;
 /**
  * Servicio contratado por un usuario sobre un dron del catalogo.
  *
- * costoTotal y fechaCreacion los calcula y asigna el servidor al crear el
- * pedido; nunca llegan desde el cliente. Quedan persistidos para que la
- * factura refleje lo que se cobro en ese momento aunque despues cambien las
- * tarifas del modelo.
+ * costoTotal y fechaCreacion los asigna el servidor, nunca el cliente. Se
+ * persisten para que la factura refleje lo que se cobro en su momento aunque
+ * despues cambien las tarifas del modelo.
  */
 @Entity
 @Table(name = "pedido")

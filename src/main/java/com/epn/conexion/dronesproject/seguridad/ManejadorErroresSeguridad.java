@@ -15,17 +15,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Hace que los errores de seguridad salgan con el mismo formato JSON que ya
- * usa GlobalException, en vez de la pagina de error por defecto de Spring.
- *
- * Estos dos casos no pasan por @RestControllerAdvice: ocurren en la cadena de
- * filtros, antes de que exista un controlador al que aplicarle el advice. Por
- * eso hay que resolverlos aqui y no en GlobalException.
- *
- * Implementa las dos interfaces en una sola clase a proposito, para que el
- * formato de 401 y 403 no se pueda desincronizar.
- */
 @Component
 public class ManejadorErroresSeguridad implements AuthenticationEntryPoint, AccessDeniedHandler {
 
@@ -35,7 +24,6 @@ public class ManejadorErroresSeguridad implements AuthenticationEntryPoint, Acce
         this.objectMapper = objectMapper;
     }
 
-    /** Falta el token o no es valido: 401. */
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
@@ -44,7 +32,6 @@ public class ManejadorErroresSeguridad implements AuthenticationEntryPoint, Acce
                 "Se requiere un token valido en el header Authorization");
     }
 
-    /** Hay token valido pero el rol no alcanza: 403. */
     @Override
     public void handle(HttpServletRequest request,
                        HttpServletResponse response,

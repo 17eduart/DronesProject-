@@ -38,7 +38,7 @@ public class PedidoController {
     @PostMapping
     public ResponseEntity<PedidoResponse> crear(Authentication autenticacion,
                                                 @RequestBody PedidoRequest datos) {
-        // El username sale del token, no del body: nadie puede pedir a nombre de otro.
+
         Pedido pedido = pedidoServicio.crear(
                 autenticacion.getName(),
                 datos.getCodigoDron(),
@@ -68,13 +68,6 @@ public class PedidoController {
         return FacturaResponse.desde(obtenerSiTienePermiso(autenticacion, id));
     }
 
-    /**
-     * Carga el pedido y comprueba que quien lo pide puede verlo.
-     *
-     * Primero 404 y despues 403: si respondieramos 403 para un id inexistente
-     * estariamos confirmando que ese pedido existe, que es justo lo que no
-     * queremos filtrar. Un admin ve cualquiera; un cliente, solo los suyos.
-     */
     private Pedido obtenerSiTienePermiso(Authentication autenticacion, Long id) {
         Pedido pedido = pedidoServicio.buscarPorId(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("No existe el pedido " + id));

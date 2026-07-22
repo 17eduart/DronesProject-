@@ -8,11 +8,10 @@ import java.time.LocalDateTime;
 /**
  * Factura de un pedido, con el costo desglosado en sus tres componentes.
  *
- * El total sale del costoTotal guardado en el pedido, no de recalcularlo: es
- * lo que efectivamente se cobro. Los componentes si se recalculan a partir de
- * las tarifas del dron, asi que si algun dia cambian las tarifas de un modelo,
- * las facturas viejas mantendrian el total correcto pero el desglose dejaria
- * de sumar. Cuando eso importe, habra que persistir tambien los componentes.
+ * El total sale del costoTotal guardado en el pedido, que es lo que realmente
+ * se cobro; los componentes se recalculan de las tarifas del dron. Si algun dia
+ * cambian las tarifas de un modelo, las facturas viejas conservarian el total
+ * correcto pero su desglose dejaria de sumar.
  */
 public class FacturaResponse {
     private final String numeroFactura;
