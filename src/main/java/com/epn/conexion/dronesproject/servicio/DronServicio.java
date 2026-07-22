@@ -2,6 +2,7 @@ package com.epn.conexion.dronesproject.servicio;
 
 import com.epn.conexion.dronesproject.modelo.Dron;
 import com.epn.conexion.dronesproject.modelo.DronCarga;
+import com.epn.conexion.dronesproject.modelo.DronEmergencia;
 import com.epn.conexion.dronesproject.modelo.DronLiviano;
 import com.epn.conexion.dronesproject.modelo.DronRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class DronServicio {
         Dron dron = switch (tipo.toUpperCase()){
             case "LIVIANO" -> new DronLiviano(codigo, modelo, distancia_km, peso_maximo, horas_vuelo);
             case "CARGA" -> new DronCarga(codigo, modelo, distancia_km, peso_maximo, horas_vuelo);
+            case "EMERGENCIA" -> new DronEmergencia(codigo, modelo, distancia_km, peso_maximo, horas_vuelo);
             default -> throw new IllegalArgumentException("El Tipo de Dron no existe");
         };
         return dronRepository.save(dron);
@@ -40,6 +42,7 @@ public class DronServicio {
         Dron dron = switch (tipo.toUpperCase()){
             case "LIVIANO" -> new DronLiviano(codigo, modelo, distancia_km, peso_maximo, horas_vuelo);
             case "CARGA" -> new DronCarga(codigo, modelo, distancia_km, peso_maximo, horas_vuelo);
+            case "EMERGENCIA" -> new DronEmergencia(codigo, modelo, distancia_km, peso_maximo, horas_vuelo);
             default -> throw new IllegalArgumentException("El Tipo de Dron no existe");
         };
         return dronRepository.save(dron);

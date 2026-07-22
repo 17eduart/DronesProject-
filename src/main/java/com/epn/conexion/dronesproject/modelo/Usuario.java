@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
+    public static final String ROL_CLIENTE = "CLIENTE";
+    public static final String ROL_ADMINISTRADOR = "ADMINISTRADOR";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

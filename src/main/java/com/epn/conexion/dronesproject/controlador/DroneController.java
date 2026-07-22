@@ -39,15 +39,20 @@ public class DroneController {
         return ResponseEntity.ok(nuevo);
     }
 
-    @PutMapping("/{codigo}")
-    public ResponseEntity<Dron> actualizarDron(@PathVariable String codigo, @RequestBody Dron dron){
-        return dronServicio.buscarCodigo(codigo)
-                .map(existente ->{
-                    dron.setCodigo(codigo);
-                    Dron actualizado = dronServicio.actualizar(dron);
-                    return ResponseEntity.ok(actualizado);
-                })
-                .orElse(ResponseEntity.notFound().build());
+    @PutMapping("/{tipo}/{codigo}")
+    public ResponseEntity<Dron> actualizarDron(@PathVariable String tipo, @PathVariable String codigo, @RequestBody DronRequest datos){
+        if (dronServicio.buscarCodigo(codigo).isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        Dron actualizado = dronServicio.actualizar(
+                tipo,
+                codigo,
+                datos.getModelo(),
+                datos.getDistancia_km(),
+                datos.getPeso_maximo(),
+                datos.getHoras_vuelo()
+        );
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{codigo}")

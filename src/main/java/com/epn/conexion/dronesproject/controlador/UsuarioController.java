@@ -1,6 +1,7 @@
 package com.epn.conexion.dronesproject.controlador;
 
 import com.epn.conexion.dronesproject.modelo.Usuario;
+import com.epn.conexion.dronesproject.modelo.UsuarioRequest;
 import com.epn.conexion.dronesproject.servicio.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,14 +17,16 @@ public class UsuarioController {
     private UsuarioServicio usuarioServicio;
 
     @PostMapping("/registro")
-    public ResponseEntity<String> registrar(@RequestBody Usuario datos){
-        usuarioServicio.registrar(datos.getUsername(), datos.getPassword(), datos.getRol());
+    public ResponseEntity<String> registrar(@RequestBody UsuarioRequest datos){
+        // El registro publico siempre crea CLIENTE. Los ADMINISTRADOR se crean
+        // por otra via (pendiente para el sprint de JWT/roles).
+        usuarioServicio.registrar(datos.getUsername(), datos.getPassword(), Usuario.ROL_CLIENTE);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Usuario Registrado"+datos.getUsername());
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Usuario datos){
+    public ResponseEntity<String> login(@RequestBody UsuarioRequest datos){
         boolean valido = usuarioServicio.login(datos.getUsername(), datos.getPassword());
         if (valido){
             return ResponseEntity.ok("Login Correcto");
