@@ -1,4 +1,4 @@
-package com.epn.conexion.dronesproject.controlador;
+package com.epn.conexion.dronesproject.servicio;
 
 import com.epn.conexion.dronesproject.modelo.Dron;
 import com.epn.conexion.dronesproject.modelo.DronCarga;

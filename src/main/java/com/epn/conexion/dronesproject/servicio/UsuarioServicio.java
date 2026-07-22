@@ -1,4 +1,4 @@
-package com.epn.conexion.dronesproject.controlador;
+package com.epn.conexion.dronesproject.servicio;
 
 import com.epn.conexion.dronesproject.modelo.Usuario;
 import com.epn.conexion.dronesproject.modelo.UsuarioRepository;

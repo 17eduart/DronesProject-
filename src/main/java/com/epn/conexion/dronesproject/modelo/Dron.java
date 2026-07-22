@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "dron")
+
 public abstract class Dron {
     @Id
     private String codigo;

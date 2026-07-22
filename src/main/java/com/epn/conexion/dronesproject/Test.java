@@ -1,8 +1,8 @@
 package com.epn.conexion.dronesproject;
 
-import com.epn.conexion.dronesproject.controlador.UsuarioServicio;
+import com.epn.conexion.dronesproject.servicio.UsuarioServicio;
 import com.epn.conexion.dronesproject.modelo.Dron;
-import com.epn.conexion.dronesproject.controlador.DronServicio;
+import com.epn.conexion.dronesproject.servicio.DronServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,18 +28,16 @@ public class Test implements CommandLineRunner {
 
         System.out.println("\n========== PRUEBA CRUD DRONES ==========");
 
-        // 1) INSERTAR (crea y guarda cada subclase)
         dronServicio.insertar("LIVIANO", "LV01", "Maverick", 10.0, 3.0, 110.0);
         dronServicio.insertar("CARGA",   "CG01", "Titan",    20.0, 8.0, 200.0);
 
-        // 2) LISTAR TODO
         System.out.println("\n--- Listado completo ---");
         dronServicio.listarTodo().forEach(System.out::println);
 
         // 3) BUSCAR POR CÓDIGO (Optional)
         System.out.println("\n--- Buscar LV01 ---");
         dronServicio.buscarCodigo("LV01")
-                .ifPresentOrElse(System.out::println,
+                 .ifPresentOrElse(System.out::println,
                         () -> System.out.println("No encontrado"));
 
         // 4) ACTUALIZAR

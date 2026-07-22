@@ -1,6 +1,7 @@
 package com.epn.conexion.dronesproject.controlador;
 
 import com.epn.conexion.dronesproject.modelo.Usuario;
+import com.epn.conexion.dronesproject.servicio.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
