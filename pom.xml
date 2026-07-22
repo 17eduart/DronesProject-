@@ -23,6 +23,7 @@
              sirve: el <release> del parent los ignora. -->
         <java.version>21</java.version>
         <jjwt.version>0.12.6</jjwt.version>
+        <openpdf.version>2.2.2</openpdf.version>
     </properties>
 
     <dependencies>
@@ -61,6 +62,15 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>${jjwt.version}</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- Generacion del PDF de la factura. OpenPDF es LGPL/MPL: se puede
+             usar en un proyecto cerrado sin las obligaciones de la AGPL que
+             tiene iText 7+. -->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>${openpdf.version}</version>
         </dependency>
 
         <dependency>
@@ -113,8 +123,11 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.epn.conexion.dronesproject/com.epn.conexion.dronesproject.vista.HelloApplication
-                            </mainClass>
+                            <!-- Sin prefijo de modulo: el proyecto no tiene
+                                 module-info.java, asi que corre en el classpath.
+                                 El formato "modulo/Clase" solo aplica a proyectos
+                                 modulares y aqui fallaria al resolver el modulo. -->
+                            <mainClass>com.epn.conexion.dronesproject.vista.Launcher</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

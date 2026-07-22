@@ -33,5 +33,7 @@
       <Button fx:id="btn_cotizar" layoutX="384.0" layoutY="330.0" mnemonicParsing="false" text="Cotizar" onAction="#cotizar" />
       <ComboBox fx:id="box_modelo" layoutX="336.0" layoutY="161.0" prefWidth="150.0" />
       <Label fx:id="lbl_error" layoutX="207.0" layoutY="365.0" prefWidth="400.0" style="-fx-text-fill: #c0392b;" text="" />
+      <Button fx:id="btn_volver" layoutX="30.0" layoutY="480.0" mnemonicParsing="false" text="Volver" onAction="#volver" />
+      <Button fx:id="btn_cerrar_sesion" layoutX="700.0" layoutY="10.0" mnemonicParsing="false" text="Cerrar Sesión" onAction="#cerrarSesion" />
    </children>
 </Pane>

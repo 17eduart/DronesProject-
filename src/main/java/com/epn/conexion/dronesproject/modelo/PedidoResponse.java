@@ -1,10 +1,16 @@
 package com.epn.conexion.dronesproject.modelo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
 /**
  * Lo que se devuelve al cliente tras crear o consultar un pedido.
- * Solo se serializa, por eso no tiene setters.
+ *
+ * Tiene dos constructores: el privado que la arma desde la entidad (lo usa el
+ * servidor) y el @JsonCreator que la reconstruye desde JSON (lo usa el cliente
+ * JavaFX). Sigue sin setters: se construye entera o no se construye.
  */
 public class PedidoResponse {
     private final Long id;
@@ -29,6 +35,30 @@ public class PedidoResponse {
         this.horasSolicitadas = pedido.getHorasSolicitadas();
         this.costoTotal = pedido.getCostoTotal();
         this.fechaCreacion = pedido.getFechaCreacion();
+    }
+
+    /** Constructor para deserializar en el cliente. */
+    @JsonCreator
+    public PedidoResponse(@JsonProperty("id") Long id,
+                          @JsonProperty("username") String username,
+                          @JsonProperty("codigoDron") String codigoDron,
+                          @JsonProperty("modeloDron") String modeloDron,
+                          @JsonProperty("tipoDron") String tipoDron,
+                          @JsonProperty("distanciaSolicitada") Double distanciaSolicitada,
+                          @JsonProperty("pesoSolicitado") Double pesoSolicitado,
+                          @JsonProperty("horasSolicitadas") Double horasSolicitadas,
+                          @JsonProperty("costoTotal") Double costoTotal,
+                          @JsonProperty("fechaCreacion") LocalDateTime fechaCreacion) {
+        this.id = id;
+        this.username = username;
+        this.codigoDron = codigoDron;
+        this.modeloDron = modeloDron;
+        this.tipoDron = tipoDron;
+        this.distanciaSolicitada = distanciaSolicitada;
+        this.pesoSolicitado = pesoSolicitado;
+        this.horasSolicitadas = horasSolicitadas;
+        this.costoTotal = costoTotal;
+        this.fechaCreacion = fechaCreacion;
     }
 
     public static PedidoResponse desde(Pedido pedido) {

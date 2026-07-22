@@ -29,6 +29,8 @@
       <Button fx:id="btn_liviano" layoutX="105.0" layoutY="390.0" mnemonicParsing="false" text="Dron - Liviano" onAction="#seleccionarLiviano" />
       <Button fx:id="btn_pesado" layoutX="371.0" layoutY="390.0" mnemonicParsing="false" text="Dron - Pesado" onAction="#seleccionarPesado" />
       <Button fx:id="btn_emergencia" layoutX="660.0" layoutY="390.0" mnemonicParsing="false" text="Dron - Emergencia" onAction="#seleccionarEmergencia" />
+      <Button fx:id="btn_cerrar_sesion" layoutX="757.0" layoutY="53.0" mnemonicParsing="false" text="Cerrar Sesión" onAction="#cerrarSesion" />
+      <Button fx:id="btn_admin_catalogo" layoutX="600.0" layoutY="53.0" mnemonicParsing="false" text="Administrar Catálogo" onAction="#irAAdminCatalogo" />
       <ImageView fitHeight="102.0" fitWidth="177.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@imagenes/Logo-EPN.jpg" />

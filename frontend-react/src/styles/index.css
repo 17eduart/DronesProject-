@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   Sistema de diseño — traducido del handoff de Claude Design.
+
+   Tailwind v4 configura el tema desde CSS con @theme, no con
+   tailwind.config.js (que desapareció en v4). Cada token de aquí genera sus
+   utilidades: --color-surface produce bg-surface / text-surface /
+   border-surface, --font-mono produce font-mono, etc.
+
+   Los colores están en oklch tal cual venían del diseño, sin convertirlos a
+   hex: convertirlos perdería precisión y Tailwind v4 ya trabaja en oklch.
+   =========================================================================== */
+@theme {
+  /* --- Superficies --- */
+  --color-bg: oklch(16% 0.015 250);
+  --color-chrome: oklch(18% 0.016 250);
+  --color-sunken: oklch(19% 0.016 250);
+  --color-surface: oklch(21% 0.017 250);
+  --color-raised: oklch(23% 0.018 250);
+  --color-avatar: oklch(24% 0.02 250);
+
+  /* --- Bordes, de más sutil a más marcado --- */
+  --color-line-row: oklch(26% 0.018 250);
+  --color-line-soft: oklch(28% 0.018 250);
+  --color-line: oklch(30% 0.02 250);
+  --color-line-mid: oklch(32% 0.02 250);
+  --color-line-strong: oklch(35% 0.02 250);
+  --color-line-stronger: oklch(40% 0.02 250);
+
+  /* --- Texto --- */
+  --color-ink: oklch(95% 0.006 250);
+  --color-ink-muted: oklch(65% 0.02 250);
+  --color-ink-dim: oklch(60% 0.02 250);
+  --color-ink-dimmer: oklch(55% 0.02 250);
+  --color-ink-faint: oklch(50% 0.02 250);
+  --color-ink-inverse: oklch(14% 0.02 250);
+
+  /* --- Acentos. Cada tipo de dron tiene el suyo y se usa de forma
+         consistente en tarjetas, badges y bordes. --- */
+  --color-cyan: oklch(78% 0.15 195);   /* primario / LIVIANO / cliente */
+  --color-amber: oklch(78% 0.15 70);   /* CARGA / administrador */
+  --color-danger: oklch(70% 0.18 25);  /* EMERGENCIA / errores */
+  --color-danger-ink: oklch(85% 0.1 25);
+
+  /* --- Tipografía --- */
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* --- Animaciones del diseño --- */
+  --animate-scanline: scanline 5s linear infinite;
+  --animate-scanline-slow: scanline 6s linear infinite;
+  --animate-pulse-glow: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-120%); }
+  100% { transform: translateY(120vh); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+
+/* ===========================================================================
+   Base
+   =========================================================================== */
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: color-mix(in oklch, var(--color-cyan) 30%, transparent);
+  }
+
+  /* Los selects nativos heredan el esquema oscuro para que el desplegable
+     del sistema no salga en blanco sobre el fondo oscuro. */
+  select,
+  input {
+    color-scheme: dark;
+  }
+
+  /* El diseño usa inputs numéricos; las flechitas ensucian la estética mono. */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    appearance: textfield;
+  }
+}
+
+/* ===========================================================================
+   Retícula de fondo y línea de escaneo de las pantallas de acceso
+   =========================================================================== */
+@utility grid-backdrop {
+  background-image:
+    repeating-linear-gradient(0deg, oklch(30% 0.02 250 / 25%) 0px, transparent 1px, transparent 48px),
+    repeating-linear-gradient(90deg, oklch(30% 0.02 250 / 25%) 0px, transparent 1px, transparent 48px);
+}
+
+/* ===========================================================================
+   Impresión — la factura se imprime sola, sin cabecera ni barra lateral.
+   Es lo que sustituye a una librería de PDF en el navegador.
+   =========================================================================== */
+@media print {
+  /* Fondo blanco y tinta negra: imprimir el tema oscuro gasta tóner y sale
+     ilegible en la mayoría de impresoras. */
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-area {
+    position: absolute !important;
+    inset: 0 !important;
+    margin: 0 !important;
+    padding: 24px !important;
+    max-width: none !important;
+    width: 100% !important;
+    background: #fff !important;
+    color: #000 !important;
+    border: none !important;
+  }
+
+  .print-area * {
+    background: transparent !important;
+    color: #000 !important;
+    border-color: #999 !important;
+    box-shadow: none !important;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+}

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @keyframes scanline { 0% { transform: translateY(-120%); } 100% { transform: translateY(120vh); } }
+  @keyframes pulseGlow { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.9; } }
+  @keyframes dashMove { 0% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -40; } }
+  body { margin: 0; background: oklch(16% 0.015 250); }
+  ::selection { background: oklch(78% 0.15 195 / 30%); }
+  select { color-scheme: dark; }
+</style>
+</helmet>
+
+<div style="min-height:100vh; width:100%; background: oklch(16% 0.015 250); color: oklch(95% 0.006 250); font-family: 'Space Grotesk', sans-serif; position: relative; overflow-x: hidden;">
+
+  <!-- ================= LOGIN ================= -->
+  <sc-if value="{{isLogin}}" hint-placeholder-val="{{true}}">
+    <div style="position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+      <div style="position:absolute; inset:0; background-image: repeating-linear-gradient(0deg, oklch(30% 0.02 250 / 25%) 0px, transparent 1px, transparent 48px), repeating-linear-gradient(90deg, oklch(30% 0.02 250 / 25%) 0px, transparent 1px, transparent 48px); pointer-events:none;"></div>
+      <div style="position:absolute; left:0; right:0; height:2px; background: linear-gradient(90deg, transparent, oklch(78% 0.15 195 / 70%), transparent); animation: scanline 5s linear infinite; pointer-events:none;"></div>
+      <div style="position:relative; width:420px; max-width:90vw; background: oklch(21% 0.017 250); border:1px solid oklch(32% 0.02 250); border-radius:10px; padding:44px 40px; box-shadow: 0 0 0 1px oklch(78% 0.15 195 / 8%), 0 30px 70px rgba(0,0,0,0.55);">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:32px;">
+          <div style="width:40px; height:40px; border-radius:50%; background:#f4f6f8; border:1px solid oklch(78% 0.15 195 / 50%); display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow: 0 0 14px oklch(78% 0.15 195 / 20%);">
+            <img src="uploads/Buho-EPN.png" alt="EPN" style="width:78%; height:78%; object-fit:contain;"/>
+          </div>
+          <div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; letter-spacing:0.06em; line-height:1.1;">DRONESPROJECT</div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; color: oklch(60% 0.02 250); margin-top:2px;">EPN · SISTEMA DE COTIZACIÓN</div>
+          </div>
+        </div>
+
+        <div style="font-size:22px; font-weight:600; margin-bottom:6px;">Iniciar sesión</div>
+        <div style="font-size:13px; color: oklch(65% 0.02 250); margin-bottom:24px;">Accede para cotizar o gestionar la flota de drones.</div>
+
+        <sc-if value="{{hasLoginError}}" hint-placeholder-val="{{false}}">
+          <div style="background: oklch(30% 0.1 25 / 20%); border:1px solid oklch(70% 0.18 25 / 40%); color: oklch(85% 0.1 25); font-size:13px; padding:10px 12px; border-radius:6px; margin-bottom:16px; font-family:'JetBrains Mono',monospace;">{{loginError}}</div>
+        </sc-if>
+
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <label style="display:block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Correo</label>
+            <input type="email" placeholder="usuario@epn.edu.ec" value="{{loginEmail}}" onChange="{{setLoginEmail}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:12px 14px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:14px; outline:none;"/>
+          </div>
+          <div>
+            <label style="display:block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Contraseña</label>
+            <input type="password" placeholder="••••••••" value="{{loginPassword}}" onChange="{{setLoginPassword}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:12px 14px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:14px; outline:none;"/>
+          </div>
+          <button onClick="{{handleLoginSubmit}}" style="margin-top:8px; background: oklch(78% 0.15 195); color: oklch(14% 0.02 250); border:none; border-radius:6px; padding:13px 20px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; box-shadow: 0 0 20px oklch(78% 0.15 195 / 25%);">Ingresar</button>
+          <div style="font-size:11px; font-family:'JetBrains Mono',monospace; color: oklch(50% 0.02 250); text-align:center; margin-top:-6px;">Tip: usa un correo con "admin" para ingresar como administrador.</div>
+        </div>
+
+        <div style="margin-top:26px; padding-top:20px; border-top:1px solid oklch(30% 0.02 250); text-align:center; font-size:13px; color: oklch(65% 0.02 250);">
+          ¿No tienes cuenta? <a onClick="{{goToRegister}}" style="color: oklch(78% 0.15 195); cursor:pointer; text-decoration:none;">Regístrate</a>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ================= REGISTER ================= -->
+  <sc-if value="{{isRegister}}" hint-placeholder-val="{{false}}">
+    <div style="position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+      <div style="position:absolute; inset:0; background-image: repeating-linear-gradient(0deg, oklch(30% 0.02 250 / 25%) 0px, transparent 1px, transparent 48px), repeating-linear-gradient(90deg, oklch(30% 0.02 250 / 25%) 0px, transparent 1px, transparent 48px); pointer-events:none;"></div>
+      <div style="position:absolute; left:0; right:0; height:2px; background: linear-gradient(90deg, transparent, oklch(78% 0.15 70 / 60%), transparent); animation: scanline 6s linear infinite; pointer-events:none;"></div>
+      <div style="position:relative; width:440px; max-width:90vw; background: oklch(21% 0.017 250); border:1px solid oklch(32% 0.02 250); border-radius:10px; padding:40px; box-shadow: 0 30px 70px rgba(0,0,0,0.55);">
+        <div style="font-size:22px; font-weight:600; margin-bottom:6px;">Crear cuenta</div>
+        <div style="font-size:13px; color: oklch(65% 0.02 250); margin-bottom:22px;">Regístrate como cliente para cotizar servicios de dron.</div>
+
+        <sc-if value="{{hasRegError}}" hint-placeholder-val="{{false}}">
+          <div style="background: oklch(30% 0.1 25 / 20%); border:1px solid oklch(70% 0.18 25 / 40%); color: oklch(85% 0.1 25); font-size:13px; padding:10px 12px; border-radius:6px; margin-bottom:16px; font-family:'JetBrains Mono',monospace;">{{regError}}</div>
+        </sc-if>
+
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div>
+            <label style="display:block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Nombre completo</label>
+            <input type="text" placeholder="Nombre y apellido" value="{{regName}}" onChange="{{setRegName}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:12px 14px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:14px; outline:none;"/>
+          </div>
+          <div>
+            <label style="display:block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Correo</label>
+            <input type="email" placeholder="usuario@epn.edu.ec" value="{{regEmail}}" onChange="{{setRegEmail}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:12px 14px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:14px; outline:none;"/>
+          </div>
+          <div style="display:flex; gap:12px;">
+            <div style="flex:1;">
+              <label style="display:block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Contraseña</label>
+              <input type="password" placeholder="••••••••" value="{{regPassword}}" onChange="{{setRegPassword}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:12px 14px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:14px; outline:none;"/>
+            </div>
+            <div style="flex:1;">
+              <label style="display:block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Confirmar</label>
+              <input type="password" placeholder="••••••••" value="{{regPassword2}}" onChange="{{setRegPassword2}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:12px 14px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:14px; outline:none;"/>
+            </div>
+          </div>
+          <button onClick="{{handleRegisterSubmit}}" style="margin-top:8px; background: oklch(78% 0.15 70); color: oklch(14% 0.02 250); border:none; border-radius:6px; padding:13px 20px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; box-shadow: 0 0 20px oklch(78% 0.15 70 / 25%);">Crear cuenta</button>
+        </div>
+
+        <div style="margin-top:22px; padding-top:18px; border-top:1px solid oklch(30% 0.02 250); text-align:center; font-size:13px; color: oklch(65% 0.02 250);">
+          ¿Ya tienes cuenta? <a onClick="{{goToLogin}}" style="color: oklch(78% 0.15 195); cursor:pointer; text-decoration:none;">Inicia sesión</a>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ================= APP SHELL ================= -->
+  <sc-if value="{{showChrome}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed; top:0; left:0; right:0; height:64px; background: oklch(18% 0.016 250); border-bottom:1px solid oklch(30% 0.02 250); display:flex; align-items:center; justify-content:space-between; padding:0 28px; z-index:10;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="width:32px; height:32px; border-radius:50%; background:#f4f6f8; border:1px solid oklch(78% 0.15 195 / 50%); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+          <img src="uploads/Buho-EPN.png" alt="EPN" style="width:78%; height:78%; object-fit:contain;"/>
+        </div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:14px; letter-spacing:0.06em;">DRONESPROJECT</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:32px; height:32px; border-radius:50%; background: oklch(24% 0.02 250); border:1px solid oklch(40% 0.02 250); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:600;">{{userInitials}}</div>
+          <div>
+            <div style="font-size:13px; font-weight:600; line-height:1.2;">{{username}}</div>
+            <sc-if value="{{isAdmin}}" hint-placeholder-val="{{false}}">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em; color: oklch(78% 0.15 70); text-transform:uppercase;">Administrador</div>
+            </sc-if>
+            <sc-if value="{{isClient}}" hint-placeholder-val="{{true}}">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em; color: oklch(78% 0.15 195); text-transform:uppercase;">Cliente</div>
+            </sc-if>
+          </div>
+        </div>
+        <button onClick="{{logout}}" style="background:transparent; border:1px solid oklch(35% 0.02 250); color: oklch(75% 0.02 250); border-radius:6px; padding:8px 14px; font-family:'JetBrains Mono',monospace; font-size:12px; cursor:pointer;">Cerrar sesión</button>
+      </div>
+    </div>
+
+    <div style="position:fixed; top:64px; bottom:0; left:0; width:220px; background: oklch(18% 0.016 250); border-right:1px solid oklch(30% 0.02 250); padding:24px 0; z-index:9;">
+      <sc-if value="{{isClient}}" hint-placeholder-val="{{true}}">
+        <div onClick="{{goToTypeSelect}}" style="display:flex; align-items:center; gap:10px; padding:12px 24px; cursor:pointer; font-size:13px; font-weight:500; border-left:3px solid oklch(78% 0.15 195); background: oklch(23% 0.018 250);">
+          <span style="width:8px; height:8px; border-radius:2px; background: oklch(78% 0.15 195); display:inline-block;"></span>
+          Nueva cotización
+        </div>
+      </sc-if>
+      <sc-if value="{{isAdmin}}" hint-placeholder-val="{{false}}">
+        <div onClick="{{goToAdmin}}" style="display:flex; align-items:center; gap:10px; padding:12px 24px; cursor:pointer; font-size:13px; font-weight:500; border-left:3px solid oklch(78% 0.15 70); background: oklch(23% 0.018 250);">
+          <span style="width:8px; height:8px; border-radius:2px; background: oklch(78% 0.15 70); display:inline-block;"></span>
+          Catálogo de drones
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="margin-left:220px; margin-top:64px; padding:40px; max-width:1180px;">
+
+      <!-- ===== TYPE SELECT ===== -->
+      <sc-if value="{{isTypeSelectScreen}}" hint-placeholder-val="{{false}}">
+        <div style="font-size:26px; font-weight:700; margin-bottom:6px;">Selecciona el tipo de servicio</div>
+        <div style="font-size:14px; color: oklch(65% 0.02 250); margin-bottom:32px;">Cada tipo de dron tiene límites técnicos distintos de peso y autonomía.</div>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:24px;">
+          <div onClick="{{selectLiviano}}" style="cursor:pointer; background: oklch(21% 0.017 250); border:1px solid oklch(32% 0.02 250); border-top:3px solid oklch(78% 0.15 195); border-radius:8px; padding:32px 24px; text-align:center; transition: transform .15s;">
+            <div style="width:96px; height:96px; margin:0 auto 18px; border-radius:10px; overflow:hidden; border:2px solid oklch(78% 0.15 195); box-shadow: 0 0 22px oklch(78% 0.15 195 / 35%);">
+              <img src="uploads/DroneLiviano.jpg" alt="Dron de carga liviana" style="width:100%; height:100%; object-fit:cover;"/>
+            </div>
+            <div style="font-size:17px; font-weight:700; margin-bottom:8px;">Carga liviana</div>
+            <div style="font-size:13px; color: oklch(65% 0.02 250); margin-bottom:14px; line-height:1.5;">Paquetes pequeños y entregas rápidas de corta duración.</div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color: oklch(55% 0.02 250); margin-bottom:18px;">≤ 5 kg &nbsp;·&nbsp; ≤ 120 min</div>
+            <button style="width:100%; background:transparent; border:1px solid oklch(78% 0.15 195); color: oklch(78% 0.15 195); border-radius:6px; padding:10px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer;">Seleccionar</button>
+          </div>
+
+          <div onClick="{{selectCarga}}" style="cursor:pointer; background: oklch(21% 0.017 250); border:1px solid oklch(32% 0.02 250); border-top:3px solid oklch(78% 0.15 70); border-radius:8px; padding:32px 24px; text-align:center;">
+            <div style="width:96px; height:96px; margin:0 auto 18px; border-radius:10px; overflow:hidden; border:2px solid oklch(78% 0.15 70); box-shadow: 0 0 22px oklch(78% 0.15 70 / 35%);">
+              <img src="uploads/DronePesado.jpg" alt="Dron de carga pesada" style="width:100%; height:100%; object-fit:cover;"/>
+            </div>
+            <div style="font-size:17px; font-weight:700; margin-bottom:8px;">Carga pesada</div>
+            <div style="font-size:13px; color: oklch(65% 0.02 250); margin-bottom:14px; line-height:1.5;">Transporte de mayor volumen y distancias extendidas.</div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color: oklch(55% 0.02 250); margin-bottom:18px;">&lt; 30 kg &nbsp;·&nbsp; ≤ 300 min</div>
+            <button style="width:100%; background:transparent; border:1px solid oklch(78% 0.15 70); color: oklch(78% 0.15 70); border-radius:6px; padding:10px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer;">Seleccionar</button>
+          </div>
+
+          <div onClick="{{selectEmergencia}}" style="cursor:pointer; background: oklch(21% 0.017 250); border:1px solid oklch(32% 0.02 250); border-top:3px solid oklch(70% 0.18 25); border-radius:8px; padding:32px 24px; text-align:center;">
+            <div style="width:96px; height:96px; margin:0 auto 18px; border-radius:10px; overflow:hidden; border:2px solid oklch(70% 0.18 25); box-shadow: 0 0 22px oklch(70% 0.18 25 / 35%);">
+              <img src="uploads/DroneEmergencia.png" alt="Dron de emergencia" style="width:100%; height:100%; object-fit:cover;"/>
+            </div>
+            <div style="font-size:17px; font-weight:700; margin-bottom:8px;">Emergencia</div>
+            <div style="font-size:13px; color: oklch(65% 0.02 250); margin-bottom:14px; line-height:1.5;">Respuesta prioritaria para insumos médicos y rescate.</div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color: oklch(55% 0.02 250); margin-bottom:18px;">≤ 15 kg &nbsp;·&nbsp; ≤ 180 min</div>
+            <button style="width:100%; background:transparent; border:1px solid oklch(70% 0.18 25); color: oklch(70% 0.18 25); border-radius:6px; padding:10px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer;">Seleccionar</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== DYNAMIC FORM ===== -->
+      <sc-if value="{{isFormScreen}}" hint-placeholder-val="{{false}}">
+        <div onClick="{{goBackToTypes}}" style="font-family:'JetBrains Mono',monospace; font-size:12px; color: oklch(65% 0.02 250); cursor:pointer; margin-bottom:14px;">← Cambiar tipo de servicio</div>
+        <div style="font-size:26px; font-weight:700; margin-bottom:4px;">{{formTitle}}</div>
+        <div style="font-size:14px; color: oklch(65% 0.02 250); margin-bottom:28px;">Completa los datos del vuelo para generar tu cotización.</div>
+
+        <div style="display:grid; grid-template-columns:1.3fr 1fr; gap:24px; align-items:start;">
+          <div style="background: oklch(21% 0.017 250); border:1px solid oklch(32% 0.02 250); border-radius:8px; padding:28px;">
+            <div style="display:flex; flex-direction:column; gap:18px;">
+              <div>
+                <label style="display:block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Modelo de dron</label>
+                <select value="{{formModel}}" onChange="{{handleModelChange}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:12px 14px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:14px;">
+                  <option value="">Selecciona un modelo…</option>
+                  <sc-for list="{{typeModels}}" as="m" hint-placeholder-count="4">
+                    <option value="{{m.modelo}}">{{m.modelo}} · {{m.codigo}}</option>
+                  </sc-for>
+                </select>
+              </div>
+              <div>
+                <label style="display:block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Distancia a recorrer (km)</label>
+                <input type="number" min="0" placeholder="0" value="{{formDistancia}}" onChange="{{setFormDistancia}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:12px 14px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:14px; outline:none;"/>
+              </div>
+              <div>
+                <label style="display:block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Peso a cargar (kg)</label>
+                <input type="number" min="0" placeholder="0" value="{{formPeso}}" onChange="{{setFormPeso}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:12px 14px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:14px; outline:none;"/>
+              </div>
+              <div>
+                <label style="display:block; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Horas de vuelo (min)</label>
+                <input type="number" min="0" placeholder="0" value="{{formHoras}}" onChange="{{setFormHoras}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:12px 14px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:14px; outline:none;"/>
+              </div>
+
+              <sc-if value="{{hasFormError}}" hint-placeholder-val="{{false}}">
+                <div style="background: oklch(30% 0.1 25 / 20%); border:1px solid oklch(70% 0.18 25 / 40%); color: oklch(85% 0.1 25); font-size:13px; padding:10px 12px; border-radius:6px; font-family:'JetBrains Mono',monospace;">{{formError}}</div>
+              </sc-if>
+
+              <button onClick="{{handleFormSubmit}}" style="margin-top:6px; background: oklch(78% 0.15 195); color: oklch(14% 0.02 250); border:none; border-radius:6px; padding:13px 20px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;">Generar cotización</button>
+            </div>
+          </div>
+
+          <div style="background: oklch(19% 0.016 250); border:1px solid oklch(30% 0.02 250); border-radius:8px; padding:24px;">
+            <sc-if value="{{isTypeLiviano}}" hint-placeholder-val="{{false}}">
+              <div style="width:100%; height:110px; border-radius:6px; overflow:hidden; border:2px solid oklch(78% 0.15 195); margin-bottom:16px;"><img src="uploads/DroneLiviano.jpg" alt="Dron liviano" style="width:100%; height:100%; object-fit:cover;"/></div>
+            </sc-if>
+            <sc-if value="{{isTypeCarga}}" hint-placeholder-val="{{false}}">
+              <div style="width:100%; height:110px; border-radius:6px; overflow:hidden; border:2px solid oklch(78% 0.15 70); margin-bottom:16px;"><img src="uploads/DronePesado.jpg" alt="Dron de carga pesada" style="width:100%; height:100%; object-fit:cover;"/></div>
+            </sc-if>
+            <sc-if value="{{isTypeEmergencia}}" hint-placeholder-val="{{false}}">
+              <div style="width:100%; height:110px; border-radius:6px; overflow:hidden; border:2px solid oklch(70% 0.18 25); margin-bottom:16px;"><img src="uploads/DroneEmergencia.png" alt="Dron de emergencia" style="width:100%; height:100%; object-fit:cover;"/></div>
+            </sc-if>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(78% 0.15 195); margin-bottom:16px;">Telemetría del modelo</div>
+            <sc-if value="{{hasSelectedDrone}}" hint-placeholder-val="{{false}}">
+              <div style="display:flex; flex-direction:column; gap:14px; font-family:'JetBrains Mono',monospace;">
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid oklch(28% 0.018 250); padding-bottom:10px;"><span style="color: oklch(60% 0.02 250); font-size:12px;">Código</span><span style="font-size:13px;">{{selectedCodigo}}</span></div>
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid oklch(28% 0.018 250); padding-bottom:10px;"><span style="color: oklch(60% 0.02 250); font-size:12px;">Alcance máx.</span><span style="font-size:13px;">{{selectedMaxDistancia}} km</span></div>
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid oklch(28% 0.018 250); padding-bottom:10px;"><span style="color: oklch(60% 0.02 250); font-size:12px;">Peso máx.</span><span style="font-size:13px;">{{selectedMaxPeso}} kg</span></div>
+                <div style="display:flex; justify-content:space-between;"><span style="color: oklch(60% 0.02 250); font-size:12px;">Autonomía máx.</span><span style="font-size:13px;">{{selectedMaxHoras}} min</span></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{hasNoSelectedDrone}}" hint-placeholder-val="{{true}}">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color: oklch(50% 0.02 250);">Selecciona un modelo para ver sus límites técnicos.</div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== INVOICE ===== -->
+      <sc-if value="{{isInvoiceScreen}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+          <div>
+            <div style="font-size:26px; font-weight:700;">Cotización generada</div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color: oklch(60% 0.02 250); margin-top:4px;">{{invoiceCode}} · {{invoiceDate}}</div>
+          </div>
+          <div style="display:flex; gap:12px;">
+            <button onClick="{{newQuote}}" style="background:transparent; border:1px solid oklch(35% 0.02 250); color: oklch(80% 0.02 250); border-radius:6px; padding:11px 18px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:12px; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer;">Nueva cotización</button>
+            <button onClick="{{printInvoice}}" style="background: oklch(78% 0.15 195); color: oklch(14% 0.02 250); border:none; border-radius:6px; padding:11px 18px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12px; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer;">Descargar PDF</button>
+          </div>
+        </div>
+
+        <div style="background: oklch(21% 0.017 250); border:1px solid oklch(32% 0.02 250); border-radius:8px; padding:32px; max-width:680px;">
+          <div style="display:flex; justify-content:space-between; padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid oklch(30% 0.02 250);">
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:4px;">Cliente</div>
+              <div style="font-size:15px; font-weight:600;">{{username}}</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:4px;">Dron</div>
+              <div style="font-size:15px; font-weight:600;">{{invoiceModelo}}</div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color: oklch(60% 0.02 250);">{{invoiceCodigo}} · {{invoiceTipoLabel}}</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:24px; margin-bottom:24px; font-family:'JetBrains Mono',monospace; font-size:12px; color: oklch(65% 0.02 250);">
+            <div>Distancia: <span style="color: oklch(95% 0.006 250);">{{invoiceDistancia}} km</span></div>
+            <div>Peso: <span style="color: oklch(95% 0.006 250);">{{invoicePeso}} kg</span></div>
+            <div>Vuelo: <span style="color: oklch(95% 0.006 250);">{{invoiceHoras}} min</span></div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:12px; font-family:'JetBrains Mono',monospace; font-size:14px;">
+            <div style="display:flex; justify-content:space-between;"><span style="color: oklch(65% 0.02 250);">Costo base</span><span>{{invoiceCostoBase}}</span></div>
+            <div style="display:flex; justify-content:space-between;"><span style="color: oklch(65% 0.02 250);">Componente distancia</span><span>{{invoiceComponenteDistancia}}</span></div>
+            <div style="display:flex; justify-content:space-between; padding-bottom:16px; border-bottom:1px solid oklch(30% 0.02 250);"><span style="color: oklch(65% 0.02 250);">Componente peso</span><span>{{invoiceComponentePeso}}</span></div>
+            <div style="display:flex; justify-content:space-between; background: oklch(78% 0.15 195 / 12%); border:1px solid oklch(78% 0.15 195 / 40%); border-radius:6px; padding:14px 16px; margin-top:6px;"><span style="font-weight:700; font-family:'Space Grotesk',sans-serif;">TOTAL</span><span style="font-weight:700; font-size:18px; color: oklch(78% 0.15 195);">{{invoiceTotal}}</span></div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== ADMIN CATALOG ===== -->
+      <sc-if value="{{isAdminScreen}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+          <div>
+            <div style="font-size:26px; font-weight:700;">Catálogo de drones</div>
+            <div style="font-size:14px; color: oklch(65% 0.02 250); margin-top:4px;">Administra los modelos disponibles para cotización.</div>
+          </div>
+          <button onClick="{{openNewDroneForm}}" style="background: oklch(78% 0.15 70); color: oklch(14% 0.02 250); border:none; border-radius:6px; padding:11px 18px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12px; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; white-space:nowrap;">+ Nuevo dron</button>
+        </div>
+
+        <div style="display:flex; gap:24px; align-items:flex-start;">
+          <div style="flex:1; background: oklch(21% 0.017 250); border:1px solid oklch(32% 0.02 250); border-radius:8px; overflow:hidden;">
+            <div style="display:grid; grid-template-columns:1fr 1fr 1.3fr 1fr 1fr 1fr 0.9fr 1.1fr; gap:14px; background: oklch(19% 0.016 250); padding:12px 20px; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color: oklch(60% 0.02 250); border-bottom:1px solid oklch(30% 0.02 250);">
+              <div>Código</div><div>Tipo</div><div>Modelo</div><div>Dist. máx (km)</div><div>Peso máx (kg)</div><div>Vuelo (min)</div><div>Tarifa</div><div>Acciones</div>
+            </div>
+            <sc-for list="{{catalogRows}}" as="row" hint-placeholder-count="8">
+              <div style="display:grid; grid-template-columns:1fr 1fr 1.3fr 1fr 1fr 1fr 0.9fr 1.1fr; gap:14px; align-items:center; padding:14px 20px; font-size:13px; border-bottom:1px solid oklch(26% 0.018 250);">
+                <div style="font-family:'JetBrains Mono',monospace;">{{row.codigo}}</div>
+                <div>
+                  <sc-if value="{{row.isLiviano}}" hint-placeholder-val="{{false}}"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:3px 8px; border-radius:4px; background: oklch(78% 0.15 195 / 15%); color: oklch(78% 0.15 195); border:1px solid oklch(78% 0.15 195 / 40%);">LIVIANO</span></sc-if>
+                  <sc-if value="{{row.isCarga}}" hint-placeholder-val="{{false}}"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:3px 8px; border-radius:4px; background: oklch(78% 0.15 70 / 15%); color: oklch(78% 0.15 70); border:1px solid oklch(78% 0.15 70 / 40%);">CARGA</span></sc-if>
+                  <sc-if value="{{row.isEmergencia}}" hint-placeholder-val="{{false}}"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:3px 8px; border-radius:4px; background: oklch(70% 0.18 25 / 15%); color: oklch(70% 0.18 25); border:1px solid oklch(70% 0.18 25 / 40%);">EMERGENCIA</span></sc-if>
+                </div>
+                <div>{{row.modelo}}</div>
+                <div style="font-family:'JetBrains Mono',monospace;">{{row.distancia_km}}</div>
+                <div style="font-family:'JetBrains Mono',monospace;">{{row.peso_maximo}}</div>
+                <div style="font-family:'JetBrains Mono',monospace;">{{row.horas_vuelo}}</div>
+                <div style="font-family:'JetBrains Mono',monospace;">{{row.costoTxt}}</div>
+                <div style="display:flex; gap:10px; font-family:'JetBrains Mono',monospace; font-size:12px;">
+                  <a onClick="{{row.onEdit}}" style="color: oklch(78% 0.15 195); cursor:pointer;">Editar</a>
+                  <a onClick="{{row.onDelete}}" style="color: oklch(70% 0.18 25); cursor:pointer;">Eliminar</a>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{showDroneForm}}" hint-placeholder-val="{{false}}">
+            <div style="width:340px; flex-shrink:0; background: oklch(21% 0.017 250); border:1px solid oklch(32% 0.02 250); border-left:3px solid oklch(78% 0.15 70); border-radius:8px; padding:24px;">
+              <div style="font-size:16px; font-weight:700; margin-bottom:18px;">{{droneFormTitle}}</div>
+
+              <sc-if value="{{hasDroneFormError}}" hint-placeholder-val="{{false}}">
+                <div style="background: oklch(30% 0.1 25 / 20%); border:1px solid oklch(70% 0.18 25 / 40%); color: oklch(85% 0.1 25); font-size:12px; padding:8px 10px; border-radius:6px; margin-bottom:14px; font-family:'JetBrains Mono',monospace;">{{droneFormError}}</div>
+              </sc-if>
+
+              <div style="display:flex; flex-direction:column; gap:14px;">
+                <div>
+                  <label style="display:block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:5px; font-family:'JetBrains Mono',monospace;">Código</label>
+                  <input type="text" value="{{droneFormCodigo}}" onChange="{{setDroneFormCodigo}}" disabled="{{isEditingDrone}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:10px 12px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:13px;"/>
+                </div>
+                <div>
+                  <label style="display:block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:5px; font-family:'JetBrains Mono',monospace;">Tipo</label>
+                  <select value="{{droneFormTipo}}" onChange="{{setDroneFormTipo}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:10px 12px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:13px;">
+                    <option value="LIVIANO">LIVIANO</option>
+                    <option value="CARGA">CARGA</option>
+                    <option value="EMERGENCIA">EMERGENCIA</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="display:block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:5px; font-family:'JetBrains Mono',monospace;">Modelo</label>
+                  <input type="text" value="{{droneFormModelo}}" onChange="{{setDroneFormModelo}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:10px 12px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:13px;"/>
+                </div>
+                <div>
+                  <label style="display:block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:5px; font-family:'JetBrains Mono',monospace;">Distancia máxima (km)</label>
+                  <input type="number" value="{{droneFormDistancia}}" onChange="{{setDroneFormDistancia}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:10px 12px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:13px;"/>
+                </div>
+                <div>
+                  <label style="display:block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:5px; font-family:'JetBrains Mono',monospace;">Peso máximo (kg)</label>
+                  <input type="number" value="{{droneFormPeso}}" onChange="{{setDroneFormPeso}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:10px 12px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:13px;"/>
+                </div>
+                <div>
+                  <label style="display:block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:5px; font-family:'JetBrains Mono',monospace;">Horas de vuelo (min)</label>
+                  <input type="number" value="{{droneFormHoras}}" onChange="{{setDroneFormHoras}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:10px 12px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:13px;"/>
+                </div>
+                <div>
+                  <label style="display:block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: oklch(60% 0.02 250); margin-bottom:5px; font-family:'JetBrains Mono',monospace;">Costo base ($/km)</label>
+                  <input type="number" step="0.1" value="{{droneFormCostoBase}}" onChange="{{setDroneFormCostoBase}}" style="width:100%; box-sizing:border-box; background: oklch(19% 0.016 250); border:1px solid oklch(32% 0.02 250); border-radius:6px; padding:10px 12px; color: oklch(95% 0.006 250); font-family:'JetBrains Mono',monospace; font-size:13px;"/>
+                </div>
+
+                <div style="display:flex; gap:10px; margin-top:8px;">
+                  <button onClick="{{cancelDroneForm}}" style="flex:1; background:transparent; border:1px solid oklch(35% 0.02 250); color: oklch(80% 0.02 250); border-radius:6px; padding:11px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:12px; cursor:pointer;">Cancelar</button>
+                  <button onClick="{{saveDroneForm}}" style="flex:1; background: oklch(78% 0.15 70); color: oklch(14% 0.02 250); border:none; border-radius:6px; padding:11px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12px; cursor:pointer;">Guardar</button>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+
+const CATALOG_SEED = [
+  { codigo:'CG03', tipo:'CARGA', modelo:'Titan-X', distancia_km:25, peso_maximo:5, horas_vuelo:120, costo_base:6.0 },
+  { codigo:'CG04', tipo:'CARGA', modelo:'HeavyLift 200', distancia_km:18, peso_maximo:6, horas_vuelo:140, costo_base:6.0 },
+  { codigo:'EM01', tipo:'EMERGENCIA', modelo:'Rescate-1', distancia_km:15, peso_maximo:5, horas_vuelo:90, costo_base:15.0 },
+  { codigo:'EM02', tipo:'EMERGENCIA', modelo:'MedEvac Pro', distancia_km:12, peso_maximo:4, horas_vuelo:60, costo_base:15.0 },
+  { codigo:'LV01', tipo:'LIVIANO', modelo:'Maverick-Editado', distancia_km:12, peso_maximo:3.5, horas_vuelo:100, costo_base:0.5 },
+  { codigo:'LV02', tipo:'LIVIANO', modelo:'FPV', distancia_km:10, peso_maximo:3, horas_vuelo:110, costo_base:0.5 },
+  { codigo:'LV03', tipo:'LIVIANO', modelo:'DJI Mini 4 Pro', distancia_km:15, peso_maximo:2.5, horas_vuelo:90, costo_base:0.5 },
+  { codigo:'LV04', tipo:'LIVIANO', modelo:'Neo Explorer', distancia_km:8, peso_maximo:2, horas_vuelo:70, costo_base:0.5 },
+];
+
+const TYPE_LABELS = { LIVIANO:'Carga liviana', CARGA:'Carga pesada', EMERGENCIA:'Emergencia' };
+
+class Component extends DCLogic {
+  state = {
+    screen: 'login',
+    role: null, username: '', userInitials: '',
+    droneType: null,
+    formModel: '', formDistancia: '', formPeso: '', formHoras: '', formError: '',
+    invoice: null,
+    catalog: CATALOG_SEED,
+    loginEmail: '', loginPassword: '', loginError: '',
+    regName: '', regEmail: '', regPassword: '', regPassword2: '', regError: '',
+    adminEditingCode: null, showDroneForm: false,
+    droneFormCodigo: '', droneFormTipo: 'LIVIANO', droneFormModelo: '', droneFormDistancia: '', droneFormPeso: '', droneFormHoras: '', droneFormCostoBase: '', droneFormError: '',
+    isPrintMode: false,
+  };
+
+  componentDidMount() {
+    window.addEventListener('beforeprint', () => this.setState({ isPrintMode: true }));
+    window.addEventListener('afterprint', () => this.setState({ isPrintMode: false }));
+  }
+
+  fieldSetter(field) {
+    return (e) => this.setState({ [field]: e.target.value });
+  }
+
+  handleLoginSubmit = () => {
+    const { loginEmail, loginPassword } = this.state;
+    if (!loginEmail.trim() || !loginPassword.trim()) {
+      this.setState({ loginError: 'Ingresa correo y contraseña.' });
+      return;
+    }
+    const role = loginEmail.toLowerCase().includes('admin') ? 'admin' : 'cliente';
+    const namePart = loginEmail.split('@')[0].replace(/[._]/g, ' ');
+    const username = namePart.replace(/\b\w/g, c => c.toUpperCase());
+    const initials = username.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    this.setState({
+      role, username, userInitials: initials, loginError: '',
+      screen: role === 'admin' ? 'admin' : 'typeSelect',
+    });
+  };
+
+  handleRegisterSubmit = () => {
+    const { regName, regEmail, regPassword, regPassword2 } = this.state;
+    if (!regName.trim() || !regEmail.trim() || !regPassword.trim()) {
+      this.setState({ regError: 'Completa todos los campos.' });
+      return;
+    }
+    if (regPassword !== regPassword2) {
+      this.setState({ regError: 'Las contraseñas no coinciden.' });
+      return;
+    }
+    const initials = regName.split(' ').filter(Boolean).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    this.setState({
+      role: 'cliente', username: regName, userInitials: initials || 'CL',
+      regError: '', screen: 'typeSelect',
+    });
+  };
+
+  goToRegister = () => this.setState({ screen: 'register', regError: '' });
+  goToLogin = () => this.setState({ screen: 'login', loginError: '' });
+
+  logout = () => this.setState({
+    screen: 'login', role: null, username: '', userInitials: '',
+    loginEmail: '', loginPassword: '', loginError: '',
+    regName: '', regEmail: '', regPassword: '', regPassword2: '',
+    droneType: null, invoice: null,
+  });
+
+  selectDroneType(type) {
+    this.setState({ droneType: type, formModel: '', formDistancia: '', formPeso: '', formHoras: '', formError: '', screen: 'form' });
+  }
+  selectLiviano = () => this.selectDroneType('LIVIANO');
+  selectCarga = () => this.selectDroneType('CARGA');
+  selectEmergencia = () => this.selectDroneType('EMERGENCIA');
+
+  goBackToTypes = () => this.setState({ screen: 'typeSelect' });
+  goToTypeSelect = () => this.setState({ screen: 'typeSelect', droneType: null });
+
+  handleModelChange = (e) => this.setState({ formModel: e.target.value });
+
+  handleFormSubmit = () => {
+    const { catalog, droneType, formModel, formDistancia, formPeso, formHoras } = this.state;
+    const drone = catalog.find(d => d.tipo === droneType && d.modelo === formModel);
+    if (!drone) { this.setState({ formError: 'Selecciona un modelo de dron.' }); return; }
+    const dist = parseFloat(formDistancia), peso = parseFloat(formPeso), horas = parseFloat(formHoras);
+    if (!(dist > 0) || !(peso > 0) || !(horas > 0)) { this.setState({ formError: 'Ingresa valores numéricos válidos mayores a 0.' }); return; }
+    if (dist > drone.distancia_km) { this.setState({ formError: `La distancia excede el alcance máximo del modelo (${drone.distancia_km} km).` }); return; }
+    if (peso > drone.peso_maximo) { this.setState({ formError: `El peso excede el máximo del modelo (${drone.peso_maximo} kg).` }); return; }
+    if (horas > drone.horas_vuelo) { this.setState({ formError: `El tiempo de vuelo excede la autonomía máxima (${drone.horas_vuelo} min).` }); return; }
+
+    const costoBaseFijo = drone.costo_base * 5;
+    const componenteDistancia = dist * drone.costo_base * 0.4;
+    const componentePeso = peso * drone.costo_base * 1.5;
+    const total = costoBaseFijo + componenteDistancia + componentePeso;
+
+    const now = new Date();
+    const invoice = {
+      drone, dist, peso, horas,
+      costoBaseFijo, componenteDistancia, componentePeso, total,
+      code: 'COT-' + now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '-' + Math.floor(Math.random()*900+100),
+      date: now.toLocaleDateString('es-EC', { year:'numeric', month:'short', day:'numeric' }),
+    };
+    this.setState({ invoice, formError: '', screen: 'invoice' });
+  };
+
+  newQuote = () => this.setState({ screen: 'typeSelect', droneType: null, invoice: null });
+  printInvoice = () => window.print();
+  goToAdmin = () => this.setState({ screen: 'admin' });
+
+  openNewDroneForm = () => this.setState({
+    showDroneForm: true, adminEditingCode: null, droneFormError: '',
+    droneFormCodigo: '', droneFormTipo: 'LIVIANO', droneFormModelo: '', droneFormDistancia: '', droneFormPeso: '', droneFormHoras: '', droneFormCostoBase: '',
+  });
+
+  editDroneRow(codigo) {
+    const d = this.state.catalog.find(x => x.codigo === codigo);
+    if (!d) return;
+    this.setState({
+      showDroneForm: true, adminEditingCode: codigo, droneFormError: '',
+      droneFormCodigo: d.codigo, droneFormTipo: d.tipo, droneFormModelo: d.modelo,
+      droneFormDistancia: String(d.distancia_km), droneFormPeso: String(d.peso_maximo),
+      droneFormHoras: String(d.horas_vuelo), droneFormCostoBase: String(d.costo_base),
+    });
+  }
+
+  deleteDroneRow(codigo) {
+    this.setState({ catalog: this.state.catalog.filter(d => d.codigo !== codigo) });
+  }
+
+  cancelDroneForm = () => this.setState({ showDroneForm: false, droneFormError: '' });
+
+  saveDroneForm = () => {
+    const { droneFormCodigo, droneFormTipo, droneFormModelo, droneFormDistancia, droneFormPeso, droneFormHoras, droneFormCostoBase, catalog, adminEditingCode } = this.state;
+    if (!droneFormCodigo.trim() || !droneFormModelo.trim()) { this.setState({ droneFormError: 'Código y modelo son obligatorios.' }); return; }
+    const dist = parseFloat(droneFormDistancia), peso = parseFloat(droneFormPeso), horas = parseFloat(droneFormHoras), costo = parseFloat(droneFormCostoBase);
+    if (!(dist > 0) || !(peso > 0) || !(horas > 0) || !(costo > 0)) { this.setState({ droneFormError: 'Completa los valores numéricos con cifras mayores a 0.' }); return; }
+    if (!adminEditingCode && catalog.some(d => d.codigo === droneFormCodigo)) { this.setState({ droneFormError: 'Ya existe un dron con ese código.' }); return; }
+
+    const newDrone = { codigo: droneFormCodigo, tipo: droneFormTipo, modelo: droneFormModelo, distancia_km: dist, peso_maximo: peso, horas_vuelo: horas, costo_base: costo };
+    let newCatalog;
+    if (adminEditingCode) {
+      newCatalog = catalog.map(d => d.codigo === adminEditingCode ? newDrone : d);
+    } else {
+      newCatalog = [...catalog, newDrone];
+    }
+    this.setState({ catalog: newCatalog, showDroneForm: false, droneFormError: '' });
+  };
+
+  renderVals() {
+    const s = this.state;
+    const money = (n) => '$' + n.toFixed(2);
+
+    const catalogRows = s.catalog.map(d => ({
+      ...d,
+      costoTxt: money(d.costo_base) + '/km',
+      isLiviano: d.tipo === 'LIVIANO', isCarga: d.tipo === 'CARGA', isEmergencia: d.tipo === 'EMERGENCIA',
+      onEdit: () => this.editDroneRow(d.codigo),
+      onDelete: () => this.deleteDroneRow(d.codigo),
+    }));
+
+    const typeModels = s.droneType ? s.catalog.filter(d => d.tipo === s.droneType) : [];
+    const selectedDrone = s.catalog.find(d => d.tipo === s.droneType && d.modelo === s.formModel);
+
+    const inv = s.invoice;
+
+    return {
+      isLogin: s.screen === 'login',
+      isRegister: s.screen === 'register',
+      showChrome: s.screen !== 'login' && s.screen !== 'register' && !s.isPrintMode,
+      isTypeSelectScreen: s.screen === 'typeSelect',
+      isFormScreen: s.screen === 'form',
+      isInvoiceScreen: s.screen === 'invoice',
+      isAdminScreen: s.screen === 'admin',
+
+      isAdmin: s.role === 'admin',
+      isClient: s.role !== 'admin',
+      isTypeLiviano: s.droneType === 'LIVIANO', isTypeCarga: s.droneType === 'CARGA', isTypeEmergencia: s.droneType === 'EMERGENCIA',
+      username: s.username, userInitials: s.userInitials,
+
+      loginEmail: s.loginEmail, loginPassword: s.loginPassword,
+      hasLoginError: !!s.loginError, loginError: s.loginError,
+      setLoginEmail: this.fieldSetter('loginEmail'), setLoginPassword: this.fieldSetter('loginPassword'),
+      handleLoginSubmit: this.handleLoginSubmit, goToRegister: this.goToRegister, goToLogin: this.goToLogin,
+
+      regName: s.regName, regEmail: s.regEmail, regPassword: s.regPassword, regPassword2: s.regPassword2,
+      hasRegError: !!s.regError, regError: s.regError,
+      setRegName: this.fieldSetter('regName'), setRegEmail: this.fieldSetter('regEmail'),
+      setRegPassword: this.fieldSetter('regPassword'), setRegPassword2: this.fieldSetter('regPassword2'),
+      handleRegisterSubmit: this.handleRegisterSubmit,
+
+      logout: this.logout, goToTypeSelect: this.goToTypeSelect, goToAdmin: this.goToAdmin,
+      selectLiviano: this.selectLiviano, selectCarga: this.selectCarga, selectEmergencia: this.selectEmergencia,
+
+      formTitle: s.droneType ? 'Cotizar: ' + TYPE_LABELS[s.droneType] : 'Cotizar servicio',
+      formModel: s.formModel, formDistancia: s.formDistancia, formPeso: s.formPeso, formHoras: s.formHoras,
+      hasFormError: !!s.formError, formError: s.formError,
+      typeModels, handleModelChange: this.handleModelChange,
+      setFormDistancia: this.fieldSetter('formDistancia'), setFormPeso: this.fieldSetter('formPeso'), setFormHoras: this.fieldSetter('formHoras'),
+      handleFormSubmit: this.handleFormSubmit, goBackToTypes: this.goBackToTypes,
+      hasSelectedDrone: !!selectedDrone, hasNoSelectedDrone: !selectedDrone,
+      selectedCodigo: selectedDrone ? selectedDrone.codigo : '',
+      selectedMaxDistancia: selectedDrone ? selectedDrone.distancia_km : '',
+      selectedMaxPeso: selectedDrone ? selectedDrone.peso_maximo : '',
+      selectedMaxHoras: selectedDrone ? selectedDrone.horas_vuelo : '',
+
+      newQuote: this.newQuote, printInvoice: this.printInvoice,
+      invoiceCode: inv ? inv.code : '', invoiceDate: inv ? inv.date : '',
+      invoiceModelo: inv ? inv.drone.modelo : '', invoiceCodigo: inv ? inv.drone.codigo : '',
+      invoiceTipoLabel: inv ? TYPE_LABELS[inv.drone.tipo] : '',
+      invoiceDistancia: inv ? inv.dist : '', invoicePeso: inv ? inv.peso : '', invoiceHoras: inv ? inv.horas : '',
+      invoiceCostoBase: inv ? money(inv.costoBaseFijo) : '',
+      invoiceComponenteDistancia: inv ? money(inv.componenteDistancia) : '',
+      invoiceComponentePeso: inv ? money(inv.componentePeso) : '',
+      invoiceTotal: inv ? money(inv.total) : '',
+
+      catalogRows, openNewDroneForm: this.openNewDroneForm,
+      showDroneForm: s.showDroneForm,
+      droneFormTitle: s.adminEditingCode ? 'Editar dron' : 'Nuevo dron',
+      isEditingDrone: !!s.adminEditingCode,
+      hasDroneFormError: !!s.droneFormError, droneFormError: s.droneFormError,
+      droneFormCodigo: s.droneFormCodigo, droneFormTipo: s.droneFormTipo, droneFormModelo: s.droneFormModelo,
+      droneFormDistancia: s.droneFormDistancia, droneFormPeso: s.droneFormPeso, droneFormHoras: s.droneFormHoras, droneFormCostoBase: s.droneFormCostoBase,
+      setDroneFormCodigo: this.fieldSetter('droneFormCodigo'), setDroneFormTipo: this.fieldSetter('droneFormTipo'),
+      setDroneFormModelo: this.fieldSetter('droneFormModelo'), setDroneFormDistancia: this.fieldSetter('droneFormDistancia'),
+      setDroneFormPeso: this.fieldSetter('droneFormPeso'), setDroneFormHoras: this.fieldSetter('droneFormHoras'),
+      setDroneFormCostoBase: this.fieldSetter('droneFormCostoBase'),
+      cancelDroneForm: this.cancelDroneForm, saveDroneForm: this.saveDroneForm,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

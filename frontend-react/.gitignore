@@ -1,0 +1,11 @@
+node_modules/
+dist/
+dist-ssr/
+
+# Config local con la URL del backend
+.env.local
+.env.*.local
+
+*.log
+npm-debug.log*
+.DS_Store

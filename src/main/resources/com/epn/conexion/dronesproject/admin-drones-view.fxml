@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.epn.conexion.dronesproject.vista.AdminDronesController">
+   <children>
+      <Label layoutX="370.0" layoutY="20.0" text="Administrar Catálogo de Drones" />
+
+      <TableView fx:id="tabla_drones" layoutX="30.0" layoutY="60.0" prefHeight="220.0" prefWidth="840.0">
+        <columns>
+          <TableColumn fx:id="col_codigo" prefWidth="90.0" text="Código" />
+          <TableColumn fx:id="col_tipo" prefWidth="110.0" text="Tipo" />
+          <TableColumn fx:id="col_modelo" prefWidth="180.0" text="Modelo" />
+          <TableColumn fx:id="col_distancia" prefWidth="120.0" text="Distancia (Km)" />
+          <TableColumn fx:id="col_peso" prefWidth="110.0" text="Peso (Kg)" />
+          <TableColumn fx:id="col_horas" prefWidth="130.0" text="Horas de Vuelo" />
+        </columns>
+      </TableView>
+
+      <Label layoutX="30.0" layoutY="305.0" text="Tipo" />
+      <ComboBox fx:id="box_tipo" layoutX="30.0" layoutY="325.0" prefWidth="150.0" />
+
+      <Label layoutX="200.0" layoutY="305.0" text="Código" />
+      <TextField fx:id="lbl_codigo" layoutX="200.0" layoutY="325.0" prefWidth="120.0" />
+
+      <Label layoutX="340.0" layoutY="305.0" text="Modelo" />
+      <TextField fx:id="lbl_modelo" layoutX="340.0" layoutY="325.0" prefWidth="180.0" />
+
+      <Label layoutX="30.0" layoutY="365.0" text="Distancia (Km)" />
+      <TextField fx:id="lbl_distancia" layoutX="30.0" layoutY="385.0" prefWidth="120.0" />
+
+      <Label layoutX="200.0" layoutY="365.0" text="Peso máximo (Kg)" />
+      <TextField fx:id="lbl_peso" layoutX="200.0" layoutY="385.0" prefWidth="120.0" />
+
+      <Label layoutX="340.0" layoutY="365.0" text="Horas de vuelo (min)" />
+      <TextField fx:id="lbl_horas" layoutX="340.0" layoutY="385.0" prefWidth="120.0" />
+
+      <Button fx:id="btn_agregar" layoutX="30.0" layoutY="430.0" mnemonicParsing="false" text="Agregar" onAction="#agregarDron" />
+      <Button fx:id="btn_actualizar" layoutX="120.0" layoutY="430.0" mnemonicParsing="false" text="Actualizar" onAction="#actualizarDron" />
+      <Button fx:id="btn_eliminar" layoutX="220.0" layoutY="430.0" mnemonicParsing="false" text="Eliminar" onAction="#eliminarDron" />
+      <Button fx:id="btn_limpiar" layoutX="310.0" layoutY="430.0" mnemonicParsing="false" text="Limpiar" onAction="#limpiarFormulario" />
+
+      <Label fx:id="lbl_error" layoutX="30.0" layoutY="470.0" prefWidth="700.0" style="-fx-text-fill: #c0392b;" text="" />
+
+      <Button fx:id="btn_volver" layoutX="30.0" layoutY="560.0" mnemonicParsing="false" text="Volver" onAction="#volver" />
+      <Button fx:id="btn_cerrar_sesion" layoutX="780.0" layoutY="20.0" mnemonicParsing="false" text="Cerrar Sesión" onAction="#cerrarSesion" />
+   </children>
+</Pane>

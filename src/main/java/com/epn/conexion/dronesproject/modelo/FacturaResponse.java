@@ -1,5 +1,8 @@
 package com.epn.conexion.dronesproject.modelo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
 /**
@@ -32,6 +35,26 @@ public class FacturaResponse {
         this.componenteDistancia = dron.componenteDistancia(pedido.getDistanciaSolicitada());
         this.componentePeso = dron.componentePeso(pedido.getPesoSolicitado());
         this.total = pedido.getCostoTotal();
+    }
+
+    /** Constructor para deserializar en el cliente. */
+    @JsonCreator
+    public FacturaResponse(@JsonProperty("numeroFactura") String numeroFactura,
+                           @JsonProperty("fechaEmision") LocalDateTime fechaEmision,
+                           @JsonProperty("nombreCliente") String nombreCliente,
+                           @JsonProperty("detalleDron") String detalleDron,
+                           @JsonProperty("costoBase") Double costoBase,
+                           @JsonProperty("componenteDistancia") Double componenteDistancia,
+                           @JsonProperty("componentePeso") Double componentePeso,
+                           @JsonProperty("total") Double total) {
+        this.numeroFactura = numeroFactura;
+        this.fechaEmision = fechaEmision;
+        this.nombreCliente = nombreCliente;
+        this.detalleDron = detalleDron;
+        this.costoBase = costoBase;
+        this.componenteDistancia = componenteDistancia;
+        this.componentePeso = componentePeso;
+        this.total = total;
     }
 
     public static FacturaResponse desde(Pedido pedido) {
