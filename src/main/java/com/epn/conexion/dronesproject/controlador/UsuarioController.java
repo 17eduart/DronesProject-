@@ -1,9 +1,10 @@
 package com.epn.conexion.dronesproject.controlador;
 
+import com.epn.conexion.dronesproject.modelo.LoginResponse;
 import com.epn.conexion.dronesproject.modelo.Usuario;
 import com.epn.conexion.dronesproject.modelo.UsuarioRequest;
+import com.epn.conexion.dronesproject.seguridad.JwtService;
 import com.epn.conexion.dronesproject.servicio.UsuarioServicio;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,24 +14,42 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 
 public class UsuarioController {
-    @Autowired
-    private UsuarioServicio usuarioServicio;
+    private final UsuarioServicio usuarioServicio;
+    private final JwtService jwtService;
+
+    public UsuarioController(UsuarioServicio usuarioServicio, JwtService jwtService) {
+        this.usuarioServicio = usuarioServicio;
+        this.jwtService = jwtService;
+    }
 
     @PostMapping("/registro")
     public ResponseEntity<String> registrar(@RequestBody UsuarioRequest datos){
         // El registro publico siempre crea CLIENTE. Los ADMINISTRADOR se crean
-        // por otra via (pendiente para el sprint de JWT/roles).
+        // por /admin/usuarios, que exige ya ser ADMINISTRADOR.
         usuarioServicio.registrar(datos.getUsername(), datos.getPassword(), Usuario.ROL_CLIENTE);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Usuario Registrado"+datos.getUsername());
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UsuarioRequest datos){
-        boolean valido = usuarioServicio.login(datos.getUsername(), datos.getPassword());
-        if (valido){
-            return ResponseEntity.ok("Login Correcto");
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales Invalidas");
+    public ResponseEntity<LoginResponse> login(@RequestBody UsuarioRequest datos){
+        return usuarioServicio.autenticar(datos.getUsername(), datos.getPassword())
+                .map(usuario -> ResponseEntity.ok(new LoginResponse(
+                        jwtService.generarToken(usuario.getUsername(), usuario.getRol()),
+                        usuario.getUsername(),
+                        usuario.getRol())))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }
+
+    /**
+     * Alta de administradores. El rol es fijo, igual que en /registro: recibe
+     * el mismo DTO sin campo rol para no reabrir el mass assignment que ya
+     * corregimos. Quien puede llamar aqui lo decide el SecurityFilterChain.
+     */
+    @PostMapping("/admin/usuarios")
+    public ResponseEntity<String> crearAdministrador(@RequestBody UsuarioRequest datos){
+        usuarioServicio.registrar(datos.getUsername(), datos.getPassword(), Usuario.ROL_ADMINISTRADOR);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Administrador Registrado"+datos.getUsername());
     }
 }

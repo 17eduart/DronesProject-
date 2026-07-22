@@ -21,8 +21,25 @@ public class DronLiviano extends Dron{
     }
 
     @Override
-    public double calcular_costo(){
-        return costo_base+(distancia_km*0.50);
+    public double calcularCosto(double distanciaSolicitada, double pesoSolicitado, double horasSolicitadas){
+        validarCapacidad(distanciaSolicitada, pesoSolicitado, horasSolicitadas);
+        return costo_base+componenteDistancia(distanciaSolicitada)+componentePeso(pesoSolicitado);
+    }
+
+    @Override
+    public String getTipo(){
+        return "LIVIANO";
+    }
+
+    @Override
+    protected double tarifaPorKm(){
+        return 0.50;
+    }
+
+    /** El dron liviano no cobra por peso, solo por distancia. */
+    @Override
+    protected double tarifaPorKg(){
+        return 0.0;
     }
 
 }

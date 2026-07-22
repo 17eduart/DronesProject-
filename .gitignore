@@ -1,5 +1,13 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
+
+### Configuracion local con secretos - NUNCA subir ###
+# El perfil "local" lleva el jwt.secret real de cada maquina.
+application-local.properties
+**/application-local.properties
+# Por si mas adelante aparecen otros perfiles con secretos (prod, staging...).
+application-*-local.properties
+
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin

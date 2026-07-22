@@ -21,8 +21,24 @@ public class DronEmergencia extends Dron{
     }
 
     @Override
-    public double calcular_costo(){
-        return costo_base+(distancia_km*1.00)+(peso_maximo*1.50);
+    public double calcularCosto(double distanciaSolicitada, double pesoSolicitado, double horasSolicitadas){
+        validarCapacidad(distanciaSolicitada, pesoSolicitado, horasSolicitadas);
+        return costo_base+componenteDistancia(distanciaSolicitada)+componentePeso(pesoSolicitado);
+    }
+
+    @Override
+    public String getTipo(){
+        return "EMERGENCIA";
+    }
+
+    @Override
+    protected double tarifaPorKm(){
+        return 1.00;
+    }
+
+    @Override
+    protected double tarifaPorKg(){
+        return 1.50;
     }
 
 }

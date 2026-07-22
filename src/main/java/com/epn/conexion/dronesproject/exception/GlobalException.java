@@ -19,4 +19,14 @@ public class GlobalException {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+
+    @ExceptionHandler(RecursoNoEncontradoException.class)
+    public ResponseEntity<Map<String, Object>> manejarNoEncontrado(RecursoNoEncontradoException ex){
+        Map<String, Object> error = Map.of(
+                "Status",404,
+                "Error","Not Found",
+                "Mensaje",ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
 }

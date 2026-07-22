@@ -22,8 +22,24 @@ public class DronCarga extends Dron{
     }
 
     @Override
-    public double calcular_costo(){
-        return costo_base+(distancia_km*0.70)+(peso_maximo*1.20);
+    public double calcularCosto(double distanciaSolicitada, double pesoSolicitado, double horasSolicitadas){
+        validarCapacidad(distanciaSolicitada, pesoSolicitado, horasSolicitadas);
+        return costo_base+componenteDistancia(distanciaSolicitada)+componentePeso(pesoSolicitado);
+    }
+
+    @Override
+    public String getTipo(){
+        return "CARGA";
+    }
+
+    @Override
+    protected double tarifaPorKm(){
+        return 0.70;
+    }
+
+    @Override
+    protected double tarifaPorKg(){
+        return 1.20;
     }
 
 }

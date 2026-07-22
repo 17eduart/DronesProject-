@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.epn.conexion.dronesproject.vista.FacturaController">
+   <children>
+      <ImageView fitHeight="126.0" fitWidth="232.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/Logo-EPN.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="641.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/images.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="372.0" layoutY="67.0" text="Home - Drone" />
+      <Label layoutX="391.0" layoutY="108.0" text="Factura" />
+      <Label layoutX="217.0" layoutY="165.0" text="Numero de Factura: " />
+      <Label layoutX="213.0" layoutY="199.0" text="Cliente: " />
+      <Label layoutX="214.0" layoutY="235.0" prefHeight="17.0" prefWidth="84.0" text="Tipo de Dron: " />
+      <Label layoutX="215.0" layoutY="271.0" text="Costo Base: " />
+      <TextField fx:id="lbl_cliente" layoutX="336.0" layoutY="195.0" editable="false" />
+      <TextField fx:id="lbl_tipoDron" layoutX="336.0" layoutY="231.0" editable="false" />
+      <TextField fx:id="lbl_costoBase" layoutX="336.0" layoutY="267.0" editable="false" />
+      <Button fx:id="btn_imprimirFactura" layoutX="357.0" layoutY="418.0" mnemonicParsing="false" text="Imprimir Factura" onAction="#imprimirFactura" />
+      <Label layoutX="214.0" layoutY="306.0" text="Distancia Recorrida: " />
+      <Label layoutX="215.0" layoutY="343.0" text="Peso del paquete: " />
+      <Label layoutX="232.0" layoutY="374.0" text="Total : " />
+      <TextField fx:id="lbl_Nfactura" layoutX="336.0" layoutY="161.0" editable="false" />
+      <TextField fx:id="lbl_distanciaRecorrida" layoutX="336.0" layoutY="302.0" editable="false" />
+      <TextField fx:id="lbl_pesoPaquete" layoutX="335.0" layoutY="339.0" editable="false" />
+      <TextField fx:id="lbl_totalFactura" layoutX="334.0" layoutY="370.0" editable="false" />
+   </children>
+</Pane>

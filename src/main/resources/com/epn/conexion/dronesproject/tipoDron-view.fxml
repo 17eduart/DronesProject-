@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="492.0" prefWidth="872.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.epn.conexion.dronesproject.vista.TipoDronController">
+   <children>
+      <Label layoutX="379.0" layoutY="53.0" text="Home - Drone" />
+      <Label layoutX="347.0" layoutY="80.0" text="Seleccione el tipo de dron " />
+      <ImageView fitHeight="172.0" fitWidth="252.0" layoutX="24.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/DroneLiviano.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="231.0" fitWidth="375.0" layoutX="309.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/DronePesado.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="204.0" fitWidth="278.0" layoutX="601.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/DroneEmergencia.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btn_liviano" layoutX="105.0" layoutY="390.0" mnemonicParsing="false" text="Dron - Liviano" onAction="#seleccionarLiviano" />
+      <Button fx:id="btn_pesado" layoutX="371.0" layoutY="390.0" mnemonicParsing="false" text="Dron - Pesado" onAction="#seleccionarPesado" />
+      <Button fx:id="btn_emergencia" layoutX="660.0" layoutY="390.0" mnemonicParsing="false" text="Dron - Emergencia" onAction="#seleccionarEmergencia" />
+      <ImageView fitHeight="102.0" fitWidth="177.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/Logo-EPN.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="176.0" layoutX="733.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/images.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>

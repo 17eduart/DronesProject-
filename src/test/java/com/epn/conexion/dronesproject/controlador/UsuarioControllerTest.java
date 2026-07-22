@@ -2,13 +2,19 @@ package com.epn.conexion.dronesproject.controlador;
 
 import com.epn.conexion.dronesproject.modelo.Usuario;
 import com.epn.conexion.dronesproject.modelo.UsuarioRequest;
+import com.epn.conexion.dronesproject.seguridad.JwtAuthFilter;
+import com.epn.conexion.dronesproject.seguridad.JwtService;
+import com.epn.conexion.dronesproject.seguridad.ManejadorErroresSeguridad;
+import com.epn.conexion.dronesproject.seguridad.SecurityConfig;
 import com.epn.conexion.dronesproject.servicio.UsuarioServicio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -33,8 +39,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * reemplazando UsuarioRequest por la entidad Usuario), estas pruebas fallan.
  *
  * Usa el slice @WebMvcTest: levanta solo la capa web, sin JPA ni MySQL.
+ *
+ * El @Import es necesario porque @WebMvcTest no recoge clases @Configuration
+ * propias: sin el se aplicaria la seguridad por defecto de Spring Boot y
+ * /registro respondería 401 en vez de 201.
  */
 @WebMvcTest(UsuarioController.class)
+@Import({SecurityConfig.class, JwtAuthFilter.class, ManejadorErroresSeguridad.class, JwtService.class})
 class UsuarioControllerTest {
 
     @Autowired
@@ -42,6 +53,10 @@ class UsuarioControllerTest {
 
     @MockitoBean
     private UsuarioServicio usuarioServicio;
+
+    /** Lo exige JwtAuthFilter; aqui no se usa porque /registro es publico. */
+    @MockitoBean
+    private UserDetailsService userDetailsService;
 
     @Test
     @DisplayName("POST /registro ignora el rol del body y registra siempre como CLIENTE")
